@@ -6,11 +6,11 @@
 }
 
 :root {
-  /* High Contrast Light Mode (Pure White BG, Cool Gray Cards) */
+  /* Pure White Light Mode */
   --background: #ffffff;
-  --foreground: #09090b; /* Zinc-950 */
+  --foreground: #09090b; /* Zinc-950 (Deep Black) */
   
-  --card: #f8fafc; /* Slate-50 - Very subtle cool gray */
+  --card: #ffffff; /* Pure White */
   --card-foreground: #09090b;
   
   --popover: #ffffff;
@@ -19,20 +19,20 @@
   --primary: #09090b;
   --primary-foreground: #ffffff;
   
-  --secondary: #f1f5f9; /* Slate-100 */
-  --secondary-foreground: #0f172a;
+  --secondary: #f4f4f5; /* Zinc-100 */
+  --secondary-foreground: #09090b;
   
-  --muted: #f1f5f9;
-  --muted-foreground: #64748b; /* Slate-500 */
+  --muted: #f4f4f5;
+  --muted-foreground: #71717a; /* Zinc-500 */
   
-  --accent: #f1f5f9;
-  --accent-foreground: #0f172a;
+  --accent: #f4f4f5;
+  --accent-foreground: #09090b;
   
   --destructive: #ef4444;
-  --destructive-foreground: #f8fafc;
+  --destructive-foreground: #ffffff;
 
-  --border: #e2e8f0; /* Slate-200 */
-  --input: #e2e8f0;
+  --border: #e4e4e7; /* Zinc-200 */
+  --input: #e4e4e7;
   --ring: #09090b;
 }
 

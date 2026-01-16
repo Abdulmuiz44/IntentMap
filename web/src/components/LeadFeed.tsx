@@ -33,7 +33,7 @@ export const LeadFeed: React.FC<LeadFeedProps> = ({ leads, onSelectLead, isLoadi
 
   if (leads.length === 0) {
     return (
-        <div className="flex flex-col items-center justify-center py-24 border border-dashed border-zinc-300 dark:border-zinc-800 rounded-3xl bg-zinc-50/50 dark:bg-zinc-900/20 animate-pulse">
+        <div className="flex flex-col items-center justify-center py-24 border border-dashed border-zinc-200 dark:border-zinc-800 rounded-3xl bg-white dark:bg-zinc-900/20 animate-pulse">
             <div className="relative mb-6">
                 <div className="absolute inset-0 bg-blue-500/20 rounded-full blur-2xl"></div>
                 <div className="relative bg-white dark:bg-black p-4 rounded-full border border-zinc-200 dark:border-zinc-800 shadow-xl">
@@ -51,29 +51,29 @@ export const LeadFeed: React.FC<LeadFeedProps> = ({ leads, onSelectLead, isLoadi
   }
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-6">
       {leads.map((lead) => (
         <div 
           key={lead.id}
           onClick={() => onSelectLead(lead)}
-          className="group relative flex flex-col gap-3 p-6 bg-card rounded-2xl border border-zinc-200 dark:border-zinc-800 shadow-sm dark:shadow-none hover:shadow-lg hover:border-zinc-400 dark:hover:border-zinc-600 hover:scale-[1.01] transition-all duration-300 ease-out cursor-pointer"
+          className="group relative flex flex-col gap-3 p-6 bg-white dark:bg-zinc-900 rounded-2xl border border-zinc-200 dark:border-zinc-800 shadow-sm dark:shadow-none hover:shadow-lg hover:border-zinc-400 dark:hover:border-zinc-600 hover:scale-[1.01] transition-all duration-300 ease-out cursor-pointer"
         >
           {/* Header Badges */}
           <div className="flex items-center gap-2 text-xs font-semibold">
-            <span className="px-2.5 py-1 rounded-full bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 uppercase tracking-wider text-[10px]">
+            <span className="px-2.5 py-1 rounded-full bg-zinc-50 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300 uppercase tracking-wider text-[10px]">
               {lead.platform}
             </span>
             <span className={`px-2.5 py-1 rounded-full flex items-center gap-1 border ${
                 lead.pain_score >= 8 
-                ? 'bg-rose-500/10 text-rose-600 dark:text-rose-400 border-rose-500/10' 
+                ? 'bg-transparent border-rose-500/50 text-rose-600 dark:text-rose-400' 
                 : lead.pain_score >= 5 
-                ? 'bg-orange-500/10 text-orange-600 dark:text-orange-400 border-orange-500/10' 
-                : 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/10'
+                ? 'bg-transparent border-orange-500/50 text-orange-600 dark:text-orange-400' 
+                : 'bg-transparent border-emerald-500/50 text-emerald-600 dark:text-emerald-400'
             }`}>
                <Flame size={12} /> Pain: {lead.pain_score}
             </span>
             {lead.wtp_signal && (
-               <span className="px-2.5 py-1 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/10 flex items-center gap-1">
+               <span className="px-2.5 py-1 rounded-full bg-transparent border border-emerald-500/50 text-emerald-600 dark:text-emerald-400 flex items-center gap-1">
                  <DollarSign size={12} /> WTP
                </span>
             )}
@@ -84,7 +84,7 @@ export const LeadFeed: React.FC<LeadFeedProps> = ({ leads, onSelectLead, isLoadi
 
           {/* Content */}
           <div>
-            <h3 className="text-lg font-bold leading-tight mb-2 text-foreground group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+            <h3 className="text-lg font-bold leading-tight mb-2 text-zinc-950 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
                 {lead.title}
             </h3>
             <p className="text-sm text-zinc-500 dark:text-zinc-400 line-clamp-2 leading-relaxed font-medium">

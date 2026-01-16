@@ -36,24 +36,24 @@ export const StatGrid: React.FC<StatGridProps> = ({ leads }) => {
   ];
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-10">
       {stats.map((stat, i) => (
         <div 
           key={i} 
-          className={`group relative overflow-hidden bg-card p-5 rounded-2xl border border-zinc-200 dark:border-zinc-800 transition-all duration-300 ease-out hover:scale-[1.01] hover:border-zinc-400 dark:hover:border-zinc-700 shadow-sm dark:shadow-none hover:shadow-md dark:hover:bg-zinc-800/50`}
+          className={`group relative overflow-hidden bg-white dark:bg-zinc-900 p-5 rounded-2xl border border-zinc-200 dark:border-zinc-800 transition-all duration-300 ease-out hover:scale-[1.01] hover:border-zinc-400 dark:hover:border-zinc-700 shadow-sm dark:shadow-none hover:shadow-md`}
         >
           <div className="flex items-center justify-between mb-4">
              <div className={`p-2 rounded-lg transition-colors ${
                  stat.icon === DollarSign 
-                 ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 group-hover:bg-emerald-500/20' 
-                 : 'bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100'
+                 ? 'bg-emerald-50 text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-400 group-hover:bg-emerald-100 dark:group-hover:bg-emerald-500/20' 
+                 : 'bg-zinc-50 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100'
              } ${stat.icon === DollarSign && highValueLeads > 0 ? 'animate-pulse' : ''}`}>
                  <stat.icon size={18} />
              </div>
-             <div className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest">{stat.label}</div>
+             <div className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest">{stat.label}</div>
           </div>
           <div>
-            <div className="text-3xl font-bold font-mono tabular-nums tracking-tighter text-foreground">
+            <div className="text-3xl font-bold font-mono tabular-nums tracking-tighter text-zinc-950 dark:text-white">
                 {stat.value}
             </div>
             <div className="text-xs font-medium text-zinc-500 mt-1 truncate">

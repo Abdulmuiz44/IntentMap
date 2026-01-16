@@ -14,7 +14,7 @@ export function Header({ isFetching }: { isFetching?: boolean }) {
 
   if (!mounted) {
       return (
-          <header className="sticky top-0 z-50 w-full border-b border-zinc-200 dark:border-zinc-800 bg-white/80 dark:bg-black/80 backdrop-blur-xl">
+          <header className="sticky top-0 z-50 w-full border-b border-zinc-100 dark:border-zinc-800 bg-white/70 dark:bg-black/70 backdrop-blur-xl">
             <div className="flex h-16 items-center justify-between px-6 max-w-5xl mx-auto">
                 <div className="flex items-center gap-2">
                     <span className="text-xl font-bold tracking-tighter">INTENTMAP</span>
@@ -25,7 +25,7 @@ export function Header({ isFetching }: { isFetching?: boolean }) {
   }
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-zinc-200 dark:border-zinc-800 bg-white/80 dark:bg-black/80 backdrop-blur-xl transition-all duration-300">
+    <header className="sticky top-0 z-50 w-full border-b border-zinc-100 dark:border-zinc-800 bg-white/70 dark:bg-black/70 backdrop-blur-xl transition-all duration-300">
       {isFetching && (
         <div className="absolute top-0 left-0 h-[2px] w-full bg-blue-500/30 overflow-hidden">
             <div className="h-full bg-blue-600 w-1/3 animate-[loading_1s_ease-in-out_infinite]"></div>

@@ -59,7 +59,7 @@ export default function Home() {
     <div className="min-h-screen bg-background">
       <Header isFetching={loading} />
       
-      <main className="px-6 py-8 max-w-5xl mx-auto space-y-8">
+      <main className="px-6 py-8 max-w-5xl mx-auto space-y-8 pb-20">
         {/* Intro */}
         <div className="flex flex-col gap-2">
             <h1 className="text-3xl font-bold tracking-tight text-foreground">
