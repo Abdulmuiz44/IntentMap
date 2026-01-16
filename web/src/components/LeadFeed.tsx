@@ -1,5 +1,5 @@
 import React from 'react';
-import { ExternalLink, MessageCircle, DollarSign, Flame } from 'lucide-react';
+import { ExternalLink, MessageCircle, DollarSign, Flame, Activity } from 'lucide-react';
 import { Lead } from '@/lib/supabase';
 
 interface LeadFeedProps {
@@ -34,11 +34,24 @@ export const LeadFeed: React.FC<LeadFeedProps> = ({ leads, onSelectLead, isLoadi
 
   if (leads.length === 0) {
     return (
-        <div className="flex flex-col items-center justify-center py-20 text-muted-foreground">
-            <div className="bg-secondary p-4 rounded-full mb-4">
-                <MessageCircle size={32} />
+        <div className="flex flex-col items-center justify-center py-20 border border-dashed border-zinc-200 dark:border-zinc-800 rounded-3xl bg-zinc-50/30 dark:bg-zinc-900/10">
+            <div className="relative mb-6">
+                <div className="absolute inset-0 bg-blue-500/20 rounded-full blur-2xl animate-pulse"></div>
+                <div className="relative bg-white dark:bg-zinc-900 p-5 rounded-full border border-zinc-200 dark:border-zinc-800 shadow-xl">
+                    <Activity size={32} className="text-blue-500 animate-[pulse_2s_infinite]" />
+                </div>
             </div>
-            <p>No signals found yet.</p>
+            <div className="flex flex-col items-center gap-1">
+                <p className="text-lg font-semibold tracking-tight">Scanning for signals...</p>
+                <p className="text-sm text-zinc-500 max-w-[250px] text-center">
+                    IntentMap is monitoring social discussions in real-time.
+                </p>
+            </div>
+            <div className="mt-8 flex gap-1">
+                <div className="w-1 h-1 bg-zinc-300 dark:bg-zinc-700 rounded-full animate-bounce [animation-delay:-0.3s]"></div>
+                <div className="w-1 h-1 bg-zinc-300 dark:bg-zinc-700 rounded-full animate-bounce [animation-delay:-0.15s]"></div>
+                <div className="w-1 h-1 bg-zinc-300 dark:bg-zinc-700 rounded-full animate-bounce"></div>
+            </div>
         </div>
     );
   }
