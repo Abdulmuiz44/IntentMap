@@ -34,11 +34,11 @@ export const LeadFeed: React.FC<LeadFeedProps> = ({ leads, onSelectLead, isLoadi
 
   if (leads.length === 0) {
     return (
-        <div className="flex flex-col items-center justify-center py-20 border border-dashed border-zinc-200 dark:border-zinc-800 rounded-3xl bg-zinc-50/30 dark:bg-zinc-900/10">
+        <div className="flex flex-col items-center justify-center py-20 border border-dashed border-zinc-200 dark:border-zinc-800 rounded-3xl bg-zinc-50/30 dark:bg-zinc-900/10 animate-[border-pulse_3s_infinite]">
             <div className="relative mb-6">
                 <div className="absolute inset-0 bg-blue-500/20 rounded-full blur-2xl animate-pulse"></div>
                 <div className="relative bg-white dark:bg-zinc-900 p-5 rounded-full border border-zinc-200 dark:border-zinc-800 shadow-xl">
-                    <Activity size={32} className="text-blue-500 animate-[pulse_2s_infinite]" />
+                    <Activity size={32} className="text-blue-500 animate-pulse" />
                 </div>
             </div>
             <div className="flex flex-col items-center gap-1">
@@ -62,7 +62,7 @@ export const LeadFeed: React.FC<LeadFeedProps> = ({ leads, onSelectLead, isLoadi
         <div 
           key={lead.id}
           onClick={() => onSelectLead(lead)}
-          className="group relative flex flex-col gap-3 p-6 bg-card hover:bg-zinc-50 dark:hover:bg-zinc-800/50 rounded-2xl border border-zinc-200 dark:border-zinc-800 shadow-sm hover:shadow-2xl hover:shadow-emerald-500/5 dark:hover:shadow-emerald-500/10 hover:-translate-y-1 hover:border-zinc-400 dark:hover:border-zinc-700 transition-all duration-300 cursor-pointer"
+          className="group relative flex flex-col gap-3 p-6 bg-card hover:bg-zinc-50 dark:hover:bg-zinc-800/50 rounded-2xl border border-zinc-200 dark:border-zinc-800 shadow-sm hover:shadow-2xl hover:shadow-emerald-500/5 dark:hover:shadow-emerald-500/10 hover:-translate-y-1 hover:border-emerald-500/30 transition-all duration-300 cursor-pointer"
         >
           {/* Header Badges */}
           <div className="flex items-center gap-2 text-xs font-medium">
@@ -71,19 +71,19 @@ export const LeadFeed: React.FC<LeadFeedProps> = ({ leads, onSelectLead, isLoadi
             </span>
             <span className={`px-2.5 py-1 rounded-full flex items-center gap-1 border ${
                 lead.pain_score >= 8 
-                ? 'bg-rose-500/10 text-rose-600 dark:text-rose-400 border-rose-200/20' 
+                ? 'bg-rose-500/10 text-rose-500 border-rose-500/20' 
                 : lead.pain_score >= 5 
-                ? 'bg-orange-500/10 text-orange-600 dark:text-orange-400 border-orange-200/20' 
-                : 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-200/20'
+                ? 'bg-orange-500/10 text-orange-500 border-orange-500/20' 
+                : 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20'
             }`}>
                <Flame size={12} /> Pain: {lead.pain_score}/10
             </span>
             {lead.wtp_signal && (
-               <span className="px-2.5 py-1 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-200/20 flex items-center gap-1">
+               <span className="px-2.5 py-1 rounded-full bg-emerald-500/10 text-emerald-500 border border-emerald-500/20 flex items-center gap-1">
                  <DollarSign size={12} /> WTP
                </span>
             )}
-            <span className="ml-auto text-muted-foreground">
+            <span className="ml-auto text-muted-foreground tabular-nums">
                 {new Date(lead.created_at).toLocaleDateString()}
             </span>
           </div>
