@@ -6,6 +6,7 @@ import { RedditPostSchema } from "./utils/schemas";
 import { logger } from "./utils/logger";
 import { withRetry } from "./utils/retry";
 import { supabase } from "./services/supabase";
+import { sendLeadAlert } from "./notifier";
 import dotenv from "dotenv";
 
 dotenv.config();
@@ -108,6 +109,17 @@ export class RedditScraper {
               logger.error('Failed to save lead to Supabase', { error });
           } else {
               logger.info(`Lead saved successfully: ${post.id}`);
+              
+              // Email Notification for High Pain
+              if (analysis.pain_score >= 8) {
+                  await sendLeadAlert({
+                      postTitle: post.title,
+                      painScore: analysis.pain_score,
+                      hardPainSummary: analysis.hard_pain_summary,
+                      momTestQuestion: analysis.mom_test_question,
+                      postUrl: `https://reddit.com${post.permalink}`
+                  });
+              }
           }
       } catch (err) {
           logger.error('Database error during saveLead', { err });
