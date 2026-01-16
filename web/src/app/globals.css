@@ -6,61 +6,61 @@
 }
 
 :root {
-  /* Perplexity-inspired Light Mode (Zinc 50/White) */
-  --background: #fafafa; /* zinc-50 */
-  --foreground: #18181b; /* zinc-900 */
+  /* High Contrast Light Mode (Pure White BG, Cool Gray Cards) */
+  --background: #ffffff;
+  --foreground: #09090b; /* Zinc-950 */
   
-  --card: #ffffff;
-  --card-foreground: #18181b;
+  --card: #f8fafc; /* Slate-50 - Very subtle cool gray */
+  --card-foreground: #09090b;
   
   --popover: #ffffff;
-  --popover-foreground: #18181b;
+  --popover-foreground: #09090b;
   
-  --primary: #18181b;
-  --primary-foreground: #fafafa;
+  --primary: #09090b;
+  --primary-foreground: #ffffff;
   
-  --secondary: #f4f4f5; /* zinc-100 */
-  --secondary-foreground: #18181b;
+  --secondary: #f1f5f9; /* Slate-100 */
+  --secondary-foreground: #0f172a;
   
-  --muted: #f4f4f5;
-  --muted-foreground: #71717a; /* zinc-500 */
+  --muted: #f1f5f9;
+  --muted-foreground: #64748b; /* Slate-500 */
   
-  --accent: #f4f4f5;
-  --accent-foreground: #18181b;
+  --accent: #f1f5f9;
+  --accent-foreground: #0f172a;
   
   --destructive: #ef4444;
-  --destructive-foreground: #fafafa;
+  --destructive-foreground: #f8fafc;
 
-  --border: #e4e4e7; /* zinc-200 */
-  --input: #e4e4e7;
-  --ring: #18181b;
+  --border: #e2e8f0; /* Slate-200 */
+  --input: #e2e8f0;
+  --ring: #09090b;
 }
 
 [data-theme="dark"] {
-  /* Perplexity-inspired Dark Mode (Zinc 950/900 - NOT pure black) */
-  --background: #09090b; /* zinc-950 */
-  --foreground: #f4f4f5; /* zinc-100 */
+  /* High Contrast Dark Mode (Pure Black BG, Charcoal Cards) */
+  --background: #000000;
+  --foreground: #f8fafc; /* Slate-50 */
   
-  --card: #18181b; /* zinc-900 */
-  --card-foreground: #f4f4f5;
+  --card: #18181b; /* Zinc-900 */
+  --card-foreground: #f8fafc;
   
   --popover: #18181b;
-  --popover-foreground: #f4f4f5;
+  --popover-foreground: #f8fafc;
   
-  --primary: #f4f4f5;
+  --primary: #f8fafc;
   --primary-foreground: #18181b;
   
-  --secondary: #27272a; /* zinc-800 */
-  --secondary-foreground: #f4f4f5;
+  --secondary: #27272a; /* Zinc-800 */
+  --secondary-foreground: #f8fafc;
   
   --muted: #27272a;
-  --muted-foreground: #a1a1aa; /* zinc-400 */
+  --muted-foreground: #a1a1aa; /* Zinc-400 */
   
   --accent: #27272a;
-  --accent-foreground: #f4f4f5;
+  --accent-foreground: #f8fafc;
   
   --destructive: #7f1d1d;
-  --destructive-foreground: #f4f4f5;
+  --destructive-foreground: #f8fafc;
 
   --border: #27272a;
   --input: #27272a;
@@ -80,15 +80,6 @@ body {
   border-color: var(--border);
 }
 
-/* Hide scrollbar for cleaner UI but keep functionality */
-.no-scrollbar::-webkit-scrollbar {
-  display: none;
-}
-.no-scrollbar {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
-
 /* Custom Minimalist Scrollbar */
 ::-webkit-scrollbar {
   width: 5px;
@@ -100,17 +91,17 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #27272a; /* zinc-800 */
+  background: #27272a;
   border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #3f3f46; /* zinc-700 */
+  background: #52525b;
 }
 
 @keyframes border-pulse {
-  0%, 100% { border-color: rgba(39, 39, 42, 0.5); }
-  50% { border-color: rgba(39, 39, 42, 1); }
+  0%, 100% { border-color: rgba(39, 39, 42, 0.3); }
+  50% { border-color: rgba(39, 39, 42, 0.8); }
 }
 
 @keyframes loading {
