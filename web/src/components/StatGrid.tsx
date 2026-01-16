@@ -9,7 +9,6 @@ interface StatGridProps {
 export const StatGrid: React.FC<StatGridProps> = ({ leads }) => {
   const totalLeads = leads.length;
   const highValueLeads = leads.filter(l => l.wtp_signal).length;
-  // Calculate average pain (safely)
   const avgPain = totalLeads > 0 
     ? (leads.reduce((acc, curr) => acc + (curr.pain_score || 0), 0) / totalLeads).toFixed(1) 
     : '0';
@@ -40,13 +39,13 @@ export const StatGrid: React.FC<StatGridProps> = ({ leads }) => {
       {stats.map((stat, i) => (
         <div 
           key={i} 
-          className={`group relative overflow-hidden bg-white dark:bg-zinc-900 p-5 rounded-2xl border border-zinc-200 dark:border-zinc-800 transition-all duration-300 ease-out hover:scale-[1.01] hover:border-zinc-400 dark:hover:border-zinc-700 shadow-sm dark:shadow-none hover:shadow-md`}
+          className="group relative overflow-hidden bg-white dark:bg-zinc-900 p-5 rounded-2xl border border-zinc-200 dark:border-zinc-800 transition-all duration-300 ease-out hover:scale-[1.01] hover:border-zinc-400 dark:hover:border-zinc-700 shadow-sm dark:shadow-none hover:shadow-md"
         >
           <div className="flex items-center justify-between mb-4">
              <div className={`p-2 rounded-lg transition-colors ${
                  stat.icon === DollarSign 
-                 ? 'bg-emerald-50 text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-400 group-hover:bg-emerald-100 dark:group-hover:bg-emerald-500/20' 
-                 : 'bg-zinc-50 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100'
+                 ? 'bg-emerald-50 text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-400' 
+                 : 'bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100'
              } ${stat.icon === DollarSign && highValueLeads > 0 ? 'animate-pulse' : ''}`}>
                  <stat.icon size={18} />
              </div>

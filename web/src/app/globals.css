@@ -6,11 +6,11 @@
 }
 
 :root {
-  /* Pure White Light Mode */
+  /* Force Pure White Foundation */
   --background: #ffffff;
-  --foreground: #09090b; /* Zinc-950 (Deep Black) */
+  --foreground: #09090b;
   
-  --card: #ffffff; /* Pure White */
+  --card: #ffffff;
   --card-foreground: #09090b;
   
   --popover: #ffffff;
@@ -19,11 +19,11 @@
   --primary: #09090b;
   --primary-foreground: #ffffff;
   
-  --secondary: #f4f4f5; /* Zinc-100 */
+  --secondary: #f4f4f5;
   --secondary-foreground: #09090b;
   
   --muted: #f4f4f5;
-  --muted-foreground: #71717a; /* Zinc-500 */
+  --muted-foreground: #71717a;
   
   --accent: #f4f4f5;
   --accent-foreground: #09090b;
@@ -31,30 +31,30 @@
   --destructive: #ef4444;
   --destructive-foreground: #ffffff;
 
-  --border: #e4e4e7; /* Zinc-200 */
+  --border: #e4e4e7;
   --input: #e4e4e7;
   --ring: #09090b;
 }
 
 [data-theme="dark"] {
-  /* High Contrast Dark Mode (Pure Black BG, Charcoal Cards) */
+  /* Deep Black Dark Mode */
   --background: #000000;
-  --foreground: #f8fafc; /* Slate-50 */
+  --foreground: #f8fafc;
   
-  --card: #18181b; /* Zinc-900 */
+  --card: #09090b; /* Zinc-950 */
   --card-foreground: #f8fafc;
   
-  --popover: #18181b;
+  --popover: #09090b;
   --popover-foreground: #f8fafc;
   
   --primary: #f8fafc;
-  --primary-foreground: #18181b;
+  --primary-foreground: #09090b;
   
-  --secondary: #27272a; /* Zinc-800 */
+  --secondary: #27272a;
   --secondary-foreground: #f8fafc;
   
   --muted: #27272a;
-  --muted-foreground: #a1a1aa; /* Zinc-400 */
+  --muted-foreground: #a1a1aa;
   
   --accent: #27272a;
   --accent-foreground: #f8fafc;
@@ -75,15 +75,14 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Base styles for smooth transitions */
 * {
   border-color: var(--border);
 }
 
-/* Custom Minimalist Scrollbar */
+/* Ultra-thin Scrollbar */
 ::-webkit-scrollbar {
-  width: 5px;
-  height: 5px;
+  width: 3px;
+  height: 3px;
 }
 
 ::-webkit-scrollbar-track {
@@ -100,8 +99,8 @@ body {
 }
 
 @keyframes border-pulse {
-  0%, 100% { border-color: rgba(39, 39, 42, 0.3); }
-  50% { border-color: rgba(39, 39, 42, 0.8); }
+  0%, 100% { border-color: rgba(39, 39, 42, 0.2); }
+  50% { border-color: rgba(39, 39, 42, 0.6); }
 }
 
 @keyframes loading {

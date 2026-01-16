@@ -9,15 +9,15 @@ interface LeadFeedProps {
 }
 
 const LeadSkeleton = () => (
-    <div className="flex flex-col gap-3 p-6 bg-card rounded-2xl border border-zinc-200 dark:border-zinc-800 animate-pulse">
+    <div className="flex flex-col gap-3 p-6 bg-white dark:bg-zinc-900 rounded-2xl border border-zinc-200 dark:border-zinc-800 animate-pulse">
         <div className="flex items-center gap-2">
-            <div className="h-5 w-16 bg-zinc-200 dark:bg-zinc-800 rounded-full"></div>
-            <div className="h-5 w-24 bg-zinc-200 dark:bg-zinc-800 rounded-full"></div>
-            <div className="ml-auto h-4 w-20 bg-zinc-200 dark:bg-zinc-800 rounded"></div>
+            <div className="h-5 w-16 bg-zinc-100 dark:bg-zinc-800 rounded-full"></div>
+            <div className="h-5 w-24 bg-zinc-100 dark:bg-zinc-800 rounded-full"></div>
+            <div className="ml-auto h-4 w-20 bg-zinc-100 dark:bg-zinc-800 rounded"></div>
         </div>
         <div className="space-y-2 mt-2">
-            <div className="h-5 w-3/4 bg-zinc-200 dark:bg-zinc-800 rounded"></div>
-            <div className="h-4 w-full bg-zinc-200 dark:bg-zinc-800 rounded"></div>
+            <div className="h-5 w-3/4 bg-zinc-100 dark:bg-zinc-800 rounded"></div>
+            <div className="h-4 w-full bg-zinc-100 dark:bg-zinc-800 rounded"></div>
         </div>
     </div>
 );
@@ -35,13 +35,13 @@ export const LeadFeed: React.FC<LeadFeedProps> = ({ leads, onSelectLead, isLoadi
     return (
         <div className="flex flex-col items-center justify-center py-24 border border-dashed border-zinc-200 dark:border-zinc-800 rounded-3xl bg-white dark:bg-zinc-900/20 animate-pulse">
             <div className="relative mb-6">
-                <div className="absolute inset-0 bg-blue-500/20 rounded-full blur-2xl"></div>
-                <div className="relative bg-white dark:bg-black p-4 rounded-full border border-zinc-200 dark:border-zinc-800 shadow-xl">
+                <div className="absolute inset-0 bg-blue-500/10 rounded-full blur-2xl"></div>
+                <div className="relative bg-white dark:bg-black p-4 rounded-full border border-zinc-200 dark:border-zinc-800 shadow-sm">
                     <Activity size={28} className="text-blue-600 dark:text-blue-400 animate-pulse" />
                 </div>
             </div>
             <div className="flex flex-col items-center gap-1">
-                <p className="text-lg font-bold tracking-tight text-foreground">Scanning for signals...</p>
+                <p className="text-lg font-bold tracking-tight text-zinc-950 dark:text-white">Scanning for signals...</p>
                 <p className="text-sm text-zinc-500 dark:text-zinc-400 max-w-[250px] text-center font-medium">
                     Monitoring social discussions in real-time.
                 </p>
@@ -65,15 +65,15 @@ export const LeadFeed: React.FC<LeadFeedProps> = ({ leads, onSelectLead, isLoadi
             </span>
             <span className={`px-2.5 py-1 rounded-full flex items-center gap-1 border ${
                 lead.pain_score >= 8 
-                ? 'bg-transparent border-rose-500/50 text-rose-600 dark:text-rose-400' 
+                ? 'bg-rose-50 border-rose-200 text-rose-600 dark:bg-transparent dark:border-rose-500/50 dark:text-rose-400' 
                 : lead.pain_score >= 5 
-                ? 'bg-transparent border-orange-500/50 text-orange-600 dark:text-orange-400' 
-                : 'bg-transparent border-emerald-500/50 text-emerald-600 dark:text-emerald-400'
+                ? 'bg-orange-50 border-orange-200 text-orange-600 dark:bg-transparent dark:border-orange-500/50 dark:text-orange-400' 
+                : 'bg-emerald-50 border-emerald-200 text-emerald-600 dark:bg-transparent dark:border-emerald-500/50 dark:text-emerald-400'
             }`}>
                <Flame size={12} /> Pain: {lead.pain_score}
             </span>
             {lead.wtp_signal && (
-               <span className="px-2.5 py-1 rounded-full bg-transparent border border-emerald-500/50 text-emerald-600 dark:text-emerald-400 flex items-center gap-1">
+               <span className="px-2.5 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-600 dark:bg-transparent dark:border-emerald-500/50 dark:text-emerald-400 flex items-center gap-1">
                  <DollarSign size={12} /> WTP
                </span>
             )}

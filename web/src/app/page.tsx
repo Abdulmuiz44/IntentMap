@@ -59,13 +59,13 @@ export default function Home() {
     <div className="min-h-screen bg-background">
       <Header isFetching={loading} />
       
-      <main className="px-6 py-8 max-w-5xl mx-auto space-y-8 pb-20">
+      <main className="px-6 py-8 max-w-5xl mx-auto space-y-8 pb-32">
         {/* Intro */}
         <div className="flex flex-col gap-2">
-            <h1 className="text-3xl font-bold tracking-tight text-foreground">
+            <h1 className="text-3xl font-bold tracking-tight text-zinc-950 dark:text-white">
               Live Signals
             </h1>
-            <p className="text-lg text-muted-foreground">
+            <p className="text-lg text-zinc-500 dark:text-zinc-400">
               Real-time feed of high-intent discussions from social media.
             </p>
         </div>
