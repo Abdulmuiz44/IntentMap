@@ -56,7 +56,7 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-white dark:bg-black">
       <Header isFetching={loading} />
       
       <main className="px-6 py-8 max-w-5xl mx-auto space-y-8 pb-32">

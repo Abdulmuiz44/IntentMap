@@ -6,12 +6,14 @@
 }
 
 :root {
-  /* Total Whiteout Light Mode */
-  --background: #ffffff;
-  --foreground: #09090b; /* Zinc-950 */
+  background-color: #ffffff !important;
+  color: #000000 !important;
   
-  /* Reset Card variables to pure white */
-  --card: #ffffff; 
+  /* Force Pure White Light Mode */
+  --background: #ffffff;
+  --foreground: #09090b;
+  
+  --card: #ffffff;
   --card-foreground: #09090b;
   
   --popover: #ffffff;
@@ -20,11 +22,11 @@
   --primary: #09090b;
   --primary-foreground: #ffffff;
   
-  --secondary: #f4f4f5; /* Zinc-100 */
+  --secondary: #f4f4f5;
   --secondary-foreground: #09090b;
   
   --muted: #f4f4f5;
-  --muted-foreground: #71717a; /* Zinc-500 */
+  --muted-foreground: #71717a;
   
   --accent: #f4f4f5;
   --accent-foreground: #09090b;
@@ -32,17 +34,20 @@
   --destructive: #ef4444;
   --destructive-foreground: #ffffff;
 
-  --border: #e4e4e7; /* Zinc-200 */
+  --border: #e4e4e7;
   --input: #e4e4e7;
   --ring: #09090b;
 }
 
-[data-theme="dark"] {
-  /* High Contrast Dark Mode */
-  --background: #000000; /* Pure Black */
-  --foreground: #fafafa; /* Zinc-50 */
+.dark {
+  background-color: #000000;
+  color: #ffffff;
+
+  /* Deep Black Dark Mode */
+  --background: #000000;
+  --foreground: #fafafa;
   
-  --card: #09090b; /* Zinc-950 */
+  --card: #09090b;
   --card-foreground: #fafafa;
   
   --popover: #09090b;
@@ -51,11 +56,11 @@
   --primary: #fafafa;
   --primary-foreground: #09090b;
   
-  --secondary: #27272a; /* Zinc-800 */
+  --secondary: #27272a;
   --secondary-foreground: #fafafa;
   
   --muted: #27272a;
-  --muted-foreground: #a1a1aa; /* Zinc-400 */
+  --muted-foreground: #a1a1aa;
   
   --accent: #27272a;
   --accent-foreground: #fafafa;
@@ -63,7 +68,7 @@
   --destructive: #7f1d1d;
   --destructive-foreground: #fafafa;
 
-  --border: #27272a; /* Zinc-800 */
+  --border: #27272a;
   --input: #27272a;
   --ring: #d4d4d8;
 }
