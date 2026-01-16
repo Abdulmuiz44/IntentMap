@@ -6,67 +6,61 @@
 }
 
 :root {
-  background-color: #ffffff !important;
-  color: #000000 !important;
-  
-  /* Force Pure White Light Mode */
+  /* Explicit Pure White Light Mode */
   --background: #ffffff;
-  --foreground: #09090b;
+  --foreground: #000000;
   
   --card: #ffffff;
-  --card-foreground: #09090b;
+  --card-foreground: #000000;
   
   --popover: #ffffff;
-  --popover-foreground: #09090b;
+  --popover-foreground: #000000;
   
-  --primary: #09090b;
+  --primary: #000000;
   --primary-foreground: #ffffff;
   
   --secondary: #f4f4f5;
-  --secondary-foreground: #09090b;
+  --secondary-foreground: #000000;
   
   --muted: #f4f4f5;
   --muted-foreground: #71717a;
   
   --accent: #f4f4f5;
-  --accent-foreground: #09090b;
+  --accent-foreground: #000000;
   
   --destructive: #ef4444;
   --destructive-foreground: #ffffff;
 
   --border: #e4e4e7;
   --input: #e4e4e7;
-  --ring: #09090b;
+  --ring: #000000;
 }
 
 .dark {
-  background-color: #000000;
-  color: #ffffff;
-
-  /* Deep Black Dark Mode */
+  /* Explicit Pure Black Dark Mode */
   --background: #000000;
-  --foreground: #fafafa;
+  --foreground: #ffffff;
   
   --card: #09090b;
-  --card-foreground: #fafafa;
+  --card-foreground: #ffffff;
   
   --popover: #09090b;
-  --popover-foreground: #fafafa;
+  --popover-foreground: #ffffff;
   
-  --primary: #fafafa;
-  --primary-foreground: #09090b;
+  --primary: #ffffff;
+  --primary-foreground: #000000;
   
   --secondary: #27272a;
-  --secondary-foreground: #fafafa;
+  --secondary-foreground: #ffffff;
   
   --muted: #27272a;
   --muted-foreground: #a1a1aa;
   
   --accent: #27272a;
-  --accent-foreground: #fafafa;
+  --accent-foreground: #ffffff;
   
   --destructive: #7f1d1d;
-  --destructive-foreground: #fafafa;
+  --destructive-foreground: #ffffff;
 
   --border: #27272a;
   --input: #27272a;
@@ -74,11 +68,16 @@
 }
 
 body {
-  background-color: var(--background);
-  color: var(--foreground);
+  background-color: #ffffff;
+  color: #000000;
   font-family: var(--font-sans), sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.dark body {
+  background-color: #000000;
+  color: #ffffff;
 }
 
 * {
@@ -96,12 +95,12 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #27272a;
+  background: #52525b;
   border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #52525b;
+  background: #71717a;
 }
 
 @keyframes border-pulse {

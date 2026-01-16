@@ -62,7 +62,7 @@ export default function Home() {
       <main className="px-6 py-8 max-w-5xl mx-auto space-y-8 pb-32">
         {/* Intro */}
         <div className="flex flex-col gap-2">
-            <h1 className="text-3xl font-bold tracking-tight text-zinc-950 dark:text-white">
+            <h1 className="text-3xl font-bold tracking-tight text-zinc-950 dark:text-zinc-50">
               Live Signals
             </h1>
             <p className="text-lg text-zinc-500 dark:text-zinc-400">
