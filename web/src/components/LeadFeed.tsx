@@ -37,7 +37,7 @@ export const LeadFeed: React.FC<LeadFeedProps> = ({ leads, onSelectLead, isLoadi
             <div className="relative mb-6">
                 <div className="absolute inset-0 bg-blue-500/10 rounded-full blur-2xl"></div>
                 <div className="relative bg-white dark:bg-black p-4 rounded-full border border-zinc-200 dark:border-zinc-800 shadow-sm">
-                    <Activity size={28} className="text-blue-600 dark:text-blue-400 animate-pulse" />
+                    <Activity size={28} className="text-zinc-900 dark:text-zinc-100 animate-pulse" />
                 </div>
             </div>
             <div className="flex flex-col items-center gap-1">
@@ -56,7 +56,7 @@ export const LeadFeed: React.FC<LeadFeedProps> = ({ leads, onSelectLead, isLoadi
         <div 
           key={lead.id}
           onClick={() => onSelectLead(lead)}
-          className="group relative flex flex-col gap-3 p-6 bg-white dark:bg-zinc-900 rounded-2xl border border-zinc-200 dark:border-zinc-800 shadow-sm dark:shadow-none hover:shadow-lg hover:border-zinc-400 dark:hover:border-zinc-600 hover:scale-[1.01] transition-all duration-300 ease-out cursor-pointer"
+          className="group relative flex flex-col gap-3 p-6 bg-white dark:bg-zinc-900 rounded-2xl border border-zinc-200 dark:border-zinc-800 hover:border-zinc-400 dark:hover:border-zinc-600 hover:scale-[1.01] transition-all duration-300 ease-out cursor-pointer"
         >
           {/* Header Badges */}
           <div className="flex items-center gap-2 text-xs font-semibold">
@@ -84,7 +84,7 @@ export const LeadFeed: React.FC<LeadFeedProps> = ({ leads, onSelectLead, isLoadi
 
           {/* Content */}
           <div>
-            <h3 className="text-lg font-bold leading-tight mb-2 text-zinc-950 dark:text-zinc-50 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+            <h3 className="text-lg font-bold leading-tight mb-2 text-zinc-950 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
                 {lead.title}
             </h3>
             <p className="text-sm text-zinc-500 dark:text-zinc-400 line-clamp-2 leading-relaxed font-medium">

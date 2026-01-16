@@ -14,10 +14,10 @@ export function Header({ isFetching }: { isFetching?: boolean }) {
 
   if (!mounted) {
       return (
-          <header className="sticky top-0 z-50 w-full border-b border-zinc-200 dark:border-zinc-800 bg-white/80 dark:bg-zinc-950/80 backdrop-blur-md">
+          <header className="sticky top-0 z-50 w-full border-b border-zinc-200 dark:border-zinc-800 bg-white/90 dark:bg-black/90 backdrop-blur-md">
             <div className="flex h-16 items-center justify-between px-6 max-w-5xl mx-auto">
                 <div className="flex items-center gap-2">
-                    <span className="text-xl font-bold tracking-tighter text-zinc-950 dark:text-zinc-50">INTENTMAP</span>
+                    <span className="text-xl font-bold tracking-tighter text-zinc-950 dark:text-white">INTENTMAP</span>
                 </div>
             </div>
           </header>
@@ -25,7 +25,7 @@ export function Header({ isFetching }: { isFetching?: boolean }) {
   }
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-zinc-200 dark:border-zinc-800 bg-white/80 dark:bg-zinc-950/80 backdrop-blur-md transition-all duration-300">
+    <header className="sticky top-0 z-50 w-full border-b border-zinc-200 dark:border-zinc-800 bg-white/90 dark:bg-black/90 backdrop-blur-md transition-all duration-300">
       {isFetching && (
         <div className="absolute top-0 left-0 h-[2px] w-full bg-blue-500/20 overflow-hidden">
             <div className="h-full bg-blue-600 w-1/3 animate-[loading_1s_ease-in-out_infinite]"></div>
@@ -36,7 +36,7 @@ export function Header({ isFetching }: { isFetching?: boolean }) {
           <div className="size-6 rounded-md bg-zinc-950 dark:bg-white text-white dark:text-black flex items-center justify-center font-bold text-xs shadow-sm">
             I
           </div>
-          <span className="text-xl font-bold tracking-tighter text-zinc-950 dark:text-zinc-50">INTENTMAP</span>
+          <span className="text-xl font-bold tracking-tighter text-zinc-950 dark:text-white">INTENTMAP</span>
         </div>
 
         <button

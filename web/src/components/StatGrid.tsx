@@ -39,7 +39,7 @@ export const StatGrid: React.FC<StatGridProps> = ({ leads }) => {
       {stats.map((stat, i) => (
         <div 
           key={i} 
-          className="group relative overflow-hidden bg-white dark:bg-zinc-900 p-5 rounded-2xl border border-zinc-200 dark:border-zinc-800 transition-all duration-300 ease-out hover:scale-[1.01] hover:border-zinc-400 dark:hover:border-zinc-700 shadow-sm dark:shadow-none hover:shadow-md"
+          className="group relative overflow-hidden bg-white dark:bg-zinc-900 p-5 rounded-2xl border border-zinc-200 dark:border-zinc-800 transition-all duration-300 ease-out hover:scale-[1.01] hover:border-zinc-400 dark:hover:border-zinc-700"
         >
           <div className="flex items-center justify-between mb-4">
              <div className={`p-2 rounded-lg transition-colors ${
@@ -52,7 +52,7 @@ export const StatGrid: React.FC<StatGridProps> = ({ leads }) => {
              <div className="text-[10px] font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-widest">{stat.label}</div>
           </div>
           <div>
-            <div className="text-3xl font-bold font-mono tabular-nums tracking-tighter text-zinc-950 dark:text-zinc-50">
+            <div className="text-3xl font-bold font-mono tabular-nums tracking-tighter text-zinc-950 dark:text-white">
                 {stat.value}
             </div>
             <div className="text-xs font-medium text-zinc-500 dark:text-zinc-400 mt-1 truncate">
