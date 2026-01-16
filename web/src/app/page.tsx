@@ -1,76 +1,94 @@
-import React from 'react';
-import { supabase, Lead } from '@/lib/supabase';
-import { StatGrid } from '@/components/StatGrid';
-import { LeadTable } from '@/components/LeadTable';
+"use client"
 
-// Force dynamic rendering for real-time data
-export const dynamic = 'force-dynamic';
+import { useEffect, useState } from "react";
+import { supabase, Lead } from "@/lib/supabase";
+import { StatGrid } from "@/components/StatGrid";
+import { LeadFeed } from "@/components/LeadFeed";
+import { LeadDrawer } from "@/components/LeadDrawer";
+import { Header } from "@/components/Header";
+import { Loader2 } from "lucide-react";
 
-async function getLeads(): Promise<Lead[]> {
-  const { data, error } = await supabase
-    .from('leads')
-    .select('*')
-    .order('created_at', { ascending: false });
+export default function Home() {
+  const [leads, setLeads] = useState<Lead[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [selectedLead, setSelectedLead] = useState<Lead | null>(null);
 
-  if (error) {
-    console.error('Error fetching leads:', error);
-    return [];
-  }
+  const fetchLeads = async () => {
+    setLoading(true);
+    const { data, error } = await supabase
+      .from('leads')
+      .select('*')
+      .order('created_at', { ascending: false });
+    
+    if (error) console.error('Error fetching leads:', error);
+    else setLeads(data || []);
+    setLoading(false);
+  };
 
-  return data as Lead[];
-}
+  useEffect(() => {
+    fetchLeads();
 
-export default async function DashboardPage() {
-  const leads = await getLeads();
+    // Realtime subscription
+    const channel = supabase
+      .channel('leads_changes')
+      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'leads' }, (payload) => {
+          setLeads(prev => [payload.new as Lead, ...prev]);
+      })
+      .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'leads' }, (payload) => {
+          setLeads(prev => prev.map(l => l.id === payload.new.id ? payload.new as Lead : l));
+          // Also update selected lead if open
+          if (selectedLead?.id === payload.new.id) {
+             setSelectedLead(payload.new as Lead);
+          }
+      })
+      .subscribe();
 
-  // Calculate Stats
-  const totalLeads = leads.length;
-  const highIntent = leads.filter(l => l.pain_score >= 8 || l.wtp_signal).length;
-  const avgPain = leads.length > 0 
-    ? leads.reduce((acc, curr) => acc + curr.pain_score, 0) / leads.length 
-    : 0;
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [selectedLead?.id]); // Add dependency to ensure state consistency
+
+  const handleContactUpdate = (id: string, status: boolean) => {
+      setLeads(prev => prev.map(l => l.id === id ? { ...l, contacted: status } : l));
+      if (selectedLead && selectedLead.id === id) {
+          setSelectedLead({ ...selectedLead, contacted: status });
+      }
+  };
 
   return (
-    <main className="min-h-screen bg-white dark:bg-black text-black dark:text-white p-4 md:p-8">
-      <div className="max-w-7xl mx-auto">
-        {/* Header */}
-        <header className="mb-12 border-b border-slate-500 pb-4 flex justify-between items-end">
-          <div>
-            <h1 className="text-4xl md:text-5xl font-bold tracking-tighter mb-2">
-              INTENTMAP
-              <span className="text-slate-500 text-lg md:text-xl font-normal ml-2 tracking-normal">
-                / leads
-              </span>
+    <div className="min-h-screen bg-background">
+      <Header />
+      
+      <main className="px-6 py-8 max-w-5xl mx-auto space-y-8">
+        {/* Intro */}
+        <div className="flex flex-col gap-2">
+            <h1 className="text-3xl font-bold tracking-tight text-foreground">
+              Live Signals
             </h1>
-            <p className="text-slate-500 max-w-lg">
-              Real-time feed of high-intent revenue signals from Reddit. 
-              Validated by AI.
+            <p className="text-lg text-muted-foreground">
+              Real-time feed of high-intent discussions from social media.
             </p>
-          </div>
-          <div className="hidden md:block text-right">
-             <div className="text-xs uppercase tracking-widest text-slate-500 mb-1">System Status</div>
-             <div className="flex items-center gap-2">
-                 <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
-                 <span className="font-bold">LIVE</span>
-             </div>
-          </div>
-        </header>
+        </div>
 
         {/* Stats */}
-        <StatGrid 
-            totalLeads={totalLeads} 
-            highIntent={highIntent} 
-            avgPain={avgPain} 
-        />
+        <StatGrid leads={leads} />
 
-        {/* Main Feed */}
-        <section>
-          <div className="flex justify-between items-center mb-4">
-             <h2 className="text-xl font-bold uppercase tracking-widest">Incoming Signals</h2>
-          </div>
-          <LeadTable initialLeads={leads} />
-        </section>
-      </div>
-    </main>
+        {/* Content Feed */}
+        {loading ? (
+            <div className="flex justify-center py-20">
+                <Loader2 className="animate-spin text-muted-foreground" size={32} />
+            </div>
+        ) : (
+            <LeadFeed leads={leads} onSelectLead={setSelectedLead} />
+        )}
+      </main>
+
+      {/* Detail Drawer */}
+      <LeadDrawer 
+        lead={selectedLead} 
+        onClose={() => setSelectedLead(null)} 
+        onContactUpdate={handleContactUpdate}
+      />
+    </div>
   );
 }

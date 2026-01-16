@@ -1,60 +1,61 @@
-'use client';
-
 import React from 'react';
-import { Copy, CheckCircle, Circle } from 'lucide-react';
+import { MessageSquare, Check, Loader2 } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 
 interface ActionButtonsProps {
   leadId: string;
   dmQuestion: string;
   isContacted: boolean;
-  onContactUpdate: (newStatus: boolean) => void;
+  onContactUpdate: (status: boolean) => void;
 }
 
 export const ActionButtons: React.FC<ActionButtonsProps> = ({ leadId, dmQuestion, isContacted, onContactUpdate }) => {
-  const [copying, setCopying] = React.useState(false);
+  const [loading, setLoading] = React.useState(false);
 
-  const handleCopy = async (e: React.MouseEvent) => {
-    e.stopPropagation();
+  const handleCopy = async () => {
     await navigator.clipboard.writeText(dmQuestion);
-    setCopying(true);
-    setTimeout(() => setCopying(false), 2000);
+    // Could add toast here
   };
 
-  const toggleContacted = async (e: React.MouseEvent) => {
-    e.stopPropagation();
-    const newStatus = !isContacted;
-    // Optimistic update
-    onContactUpdate(newStatus);
-    
-    const { error } = await supabase
-      .from('leads')
-      .update({ contacted: newStatus })
-      .eq('id', leadId);
-
-    if (error) {
-      console.error('Error updating status:', error);
-      // Revert if error (optional, but good practice)
-      onContactUpdate(!newStatus);
+  const markContacted = async () => {
+    setLoading(true);
+    try {
+        const { error } = await supabase
+            .from('leads')
+            .update({ contacted: !isContacted })
+            .eq('id', leadId);
+            
+        if (!error) {
+            onContactUpdate(!isContacted);
+        }
+    } catch (e) {
+        console.error(e);
+    } finally {
+        setLoading(false);
     }
   };
 
   return (
-    <div className="flex gap-2">
+    <div className="flex items-center gap-3">
       <button 
-        onClick={handleCopy} 
-        className="flex items-center gap-2 px-3 py-1 border border-slate-500 text-xs uppercase hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-colors"
+        onClick={handleCopy}
+        className="flex-1 flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-foreground text-background font-medium hover:bg-foreground/90 transition-all shadow-sm active:scale-[0.98]"
       >
-        <Copy size={14} />
-        {copying ? 'Copied' : 'Copy DM'}
+        <MessageSquare size={18} />
+        Copy Opener
       </button>
-
+      
       <button 
-        onClick={toggleContacted}
-        className="flex items-center gap-2 px-3 py-1 border border-slate-500 text-xs uppercase hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-colors"
+        onClick={markContacted}
+        disabled={loading}
+        className={`flex-1 flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-medium border transition-all shadow-sm active:scale-[0.98] ${
+            isContacted 
+            ? 'bg-green-50 text-green-700 border-green-200 hover:bg-green-100 dark:bg-green-900/20 dark:text-green-400 dark:border-green-800' 
+            : 'bg-background text-foreground border-border hover:bg-secondary'
+        }`}
       >
-        {isContacted ? <CheckCircle size={14} /> : <Circle size={14} />}
-        {isContacted ? 'Contacted' : 'Mark Done'}
+        {loading ? <Loader2 size={18} className="animate-spin" /> : <Check size={18} />}
+        {isContacted ? 'Contacted' : 'Mark Contacted'}
       </button>
     </div>
   );
