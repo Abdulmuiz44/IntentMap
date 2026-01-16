@@ -59,9 +59,9 @@ export const LeadDrawer: React.FC<LeadDrawerProps> = ({ lead, onClose, onContact
 
           {/* Mom Test Question */}
           <div>
-             <h4 className="text-sm uppercase tracking-widest text-slate-500 mb-2">The 'Mom Test' Opener</h4>
+             <h4 className="text-sm uppercase tracking-widest text-slate-500 mb-2">The &apos;Mom Test&apos; Opener</h4>
              <div className="p-6 border border-slate-500 bg-white dark:bg-black text-lg font-mono">
-               "{lead.ai_analysis.mom_test_question}"
+               &quot;{lead.ai_analysis.mom_test_question}&quot;
              </div>
           </div>
           
