@@ -15,18 +15,18 @@ export const LeadDrawer: React.FC<LeadDrawerProps> = ({ lead, onClose, onContact
   return (
     <div className="fixed inset-0 z-[100] flex justify-end bg-black/60 backdrop-blur-sm animate-in fade-in duration-200" onClick={onClose}>
       <div 
-        className="w-full md:w-[650px] h-full bg-background border-l border-border p-8 overflow-y-auto shadow-2xl animate-in slide-in-from-right duration-300"
+        className="w-full md:w-[650px] h-full bg-white dark:bg-zinc-950 border-l border-zinc-200 dark:border-zinc-800 p-8 overflow-y-auto shadow-2xl animate-in slide-in-from-right duration-300"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
         <div className="flex justify-between items-start mb-8">
           <div className="space-y-1">
-              <h2 className="text-sm font-bold text-muted-foreground uppercase tracking-widest">Lead Analysis</h2>
+              <h2 className="text-sm font-bold text-zinc-400 dark:text-zinc-500 uppercase tracking-widest">Lead Analysis</h2>
               <div className="text-xs text-zinc-500 font-mono">{lead.id.slice(0, 8)}...</div>
           </div>
           <button 
             onClick={onClose} 
-            className="p-2 rounded-full hover:bg-secondary transition-colors text-muted-foreground hover:text-foreground"
+            className="p-2 rounded-full hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-50"
           >
             <X size={24} />
           </button>
@@ -37,22 +37,22 @@ export const LeadDrawer: React.FC<LeadDrawerProps> = ({ lead, onClose, onContact
           <div>
             <div className="flex flex-wrap items-center gap-2 mb-4">
                {lead.contacted && (
-                   <span className="px-3 py-1 rounded-full bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400 text-xs font-bold flex items-center gap-1">
+                   <span className="px-3 py-1 rounded-full bg-blue-50 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400 text-xs font-bold flex items-center gap-1">
                        <CheckCircle2 size={12} /> CONTACTED
                    </span>
                )}
               <span className={`px-3 py-1 rounded-full text-xs font-bold border ${
-                   lead.pain_score >= 8 ? 'border-red-200 bg-red-50 text-red-700 dark:bg-red-900/20 dark:border-red-800 dark:text-red-400' : 'border-zinc-200 bg-zinc-50 text-zinc-700 dark:bg-zinc-800 dark:border-zinc-700 dark:text-zinc-300'
+                   lead.pain_score >= 8 ? 'bg-rose-50 border-rose-200 text-rose-600 dark:bg-transparent dark:border-rose-500/50 dark:text-rose-400' : 'bg-zinc-50 border-zinc-200 text-zinc-700 dark:bg-zinc-800 dark:border-zinc-700 dark:text-zinc-300'
               }`}>
                 Pain Score: {lead.pain_score}/10
               </span>
               {lead.wtp_signal && (
-                <span className="px-3 py-1 rounded-full bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400 text-xs font-bold">
+                <span className="px-3 py-1 rounded-full bg-emerald-50 border-emerald-200 text-emerald-600 dark:bg-emerald-900/30 dark:text-emerald-400 text-xs font-bold">
                   $$$ WTP Signal
                 </span>
               )}
             </div>
-            <h3 className="text-2xl font-bold tracking-tight mb-3 leading-snug">{lead.title}</h3>
+            <h3 className="text-2xl font-bold tracking-tight mb-3 leading-snug text-zinc-950 dark:text-white">{lead.title}</h3>
             <a 
               href={lead.post_url} 
               target="_blank" 
@@ -64,24 +64,24 @@ export const LeadDrawer: React.FC<LeadDrawerProps> = ({ lead, onClose, onContact
           </div>
 
           {/* AI Analysis Card */}
-          <div className="p-6 rounded-2xl bg-secondary/50 border border-border/50">
-            <h4 className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-3">The Pain Point</h4>
-            <p className="text-base leading-7 text-foreground">
+          <div className="p-6 rounded-2xl bg-zinc-50 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800">
+            <h4 className="text-xs font-bold uppercase tracking-widest text-zinc-500 mb-3">The Pain Point</h4>
+            <p className="text-base leading-7 text-zinc-900 dark:text-zinc-100">
               {lead.ai_analysis.hard_pain_summary}
             </p>
           </div>
 
           {/* Mom Test Question */}
           <div>
-             <h4 className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-3">Suggested Opener (The &apos;Mom Test&apos;)</h4>
-             <div className="p-6 rounded-2xl bg-card border border-border shadow-sm text-lg font-medium text-foreground relative">
+             <h4 className="text-xs font-bold uppercase tracking-widest text-zinc-500 mb-3">Suggested Opener (The &apos;Mom Test&apos;)</h4>
+             <div className="p-6 rounded-2xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-sm text-lg font-medium text-zinc-950 dark:text-white relative">
                <div className="absolute -left-3 top-6 w-1 h-8 bg-blue-500 rounded-full"></div>
                &quot;{lead.ai_analysis.mom_test_question}&quot;
              </div>
           </div>
           
            {/* Actions */}
-           <div className="pt-8 border-t border-border">
+           <div className="pt-8 border-t border-zinc-200 dark:border-zinc-800">
               <ActionButtons 
                 leadId={lead.id} 
                 dmQuestion={lead.ai_analysis.mom_test_question} 
@@ -92,8 +92,8 @@ export const LeadDrawer: React.FC<LeadDrawerProps> = ({ lead, onClose, onContact
 
            {/* Original Post Content */}
            <div className="pt-8 opacity-60 hover:opacity-100 transition-opacity">
-             <h4 className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-3">Original Post Context</h4>
-             <div className="p-4 rounded-xl bg-secondary/30 border border-border/50 text-sm whitespace-pre-wrap font-mono text-muted-foreground">
+             <h4 className="text-xs font-bold uppercase tracking-widest text-zinc-500 mb-3">Original Post Context</h4>
+             <div className="p-4 rounded-xl bg-zinc-50 dark:bg-zinc-900/30 border border-zinc-200 dark:border-zinc-800 text-sm whitespace-pre-wrap font-mono text-zinc-600 dark:text-zinc-400">
                 {lead.selftext}
              </div>
            </div>

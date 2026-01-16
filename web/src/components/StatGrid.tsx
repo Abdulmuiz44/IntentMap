@@ -44,18 +44,18 @@ export const StatGrid: React.FC<StatGridProps> = ({ leads }) => {
           <div className="flex items-center justify-between mb-4">
              <div className={`p-2 rounded-lg transition-colors ${
                  stat.icon === DollarSign 
-                 ? 'bg-emerald-50 text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-400' 
-                 : 'bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100'
+                 ? 'bg-emerald-50 text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-400 group-hover:bg-emerald-100 dark:group-hover:bg-emerald-500/20' 
+                 : 'bg-zinc-50 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100'
              } ${stat.icon === DollarSign && highValueLeads > 0 ? 'animate-pulse' : ''}`}>
                  <stat.icon size={18} />
              </div>
-             <div className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest">{stat.label}</div>
+             <div className="text-[10px] font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-widest">{stat.label}</div>
           </div>
           <div>
-            <div className="text-3xl font-bold font-mono tabular-nums tracking-tighter text-zinc-950 dark:text-white">
+            <div className="text-3xl font-bold font-mono tabular-nums tracking-tighter text-zinc-950 dark:text-zinc-50">
                 {stat.value}
             </div>
-            <div className="text-xs font-medium text-zinc-500 mt-1 truncate">
+            <div className="text-xs font-medium text-zinc-500 dark:text-zinc-400 mt-1 truncate">
                 {stat.desc}
             </div>
           </div>

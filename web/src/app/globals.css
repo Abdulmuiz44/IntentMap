@@ -6,11 +6,12 @@
 }
 
 :root {
-  /* Force Pure White Foundation */
+  /* Total Whiteout Light Mode */
   --background: #ffffff;
-  --foreground: #09090b;
+  --foreground: #09090b; /* Zinc-950 */
   
-  --card: #ffffff;
+  /* Reset Card variables to pure white */
+  --card: #ffffff; 
   --card-foreground: #09090b;
   
   --popover: #ffffff;
@@ -19,11 +20,11 @@
   --primary: #09090b;
   --primary-foreground: #ffffff;
   
-  --secondary: #f4f4f5;
+  --secondary: #f4f4f5; /* Zinc-100 */
   --secondary-foreground: #09090b;
   
   --muted: #f4f4f5;
-  --muted-foreground: #71717a;
+  --muted-foreground: #71717a; /* Zinc-500 */
   
   --accent: #f4f4f5;
   --accent-foreground: #09090b;
@@ -31,38 +32,38 @@
   --destructive: #ef4444;
   --destructive-foreground: #ffffff;
 
-  --border: #e4e4e7;
+  --border: #e4e4e7; /* Zinc-200 */
   --input: #e4e4e7;
   --ring: #09090b;
 }
 
 [data-theme="dark"] {
-  /* Deep Black Dark Mode */
-  --background: #000000;
-  --foreground: #f8fafc;
+  /* High Contrast Dark Mode */
+  --background: #000000; /* Pure Black */
+  --foreground: #fafafa; /* Zinc-50 */
   
   --card: #09090b; /* Zinc-950 */
-  --card-foreground: #f8fafc;
+  --card-foreground: #fafafa;
   
   --popover: #09090b;
-  --popover-foreground: #f8fafc;
+  --popover-foreground: #fafafa;
   
-  --primary: #f8fafc;
+  --primary: #fafafa;
   --primary-foreground: #09090b;
   
-  --secondary: #27272a;
-  --secondary-foreground: #f8fafc;
+  --secondary: #27272a; /* Zinc-800 */
+  --secondary-foreground: #fafafa;
   
   --muted: #27272a;
-  --muted-foreground: #a1a1aa;
+  --muted-foreground: #a1a1aa; /* Zinc-400 */
   
   --accent: #27272a;
-  --accent-foreground: #f8fafc;
+  --accent-foreground: #fafafa;
   
   --destructive: #7f1d1d;
-  --destructive-foreground: #f8fafc;
+  --destructive-foreground: #fafafa;
 
-  --border: #27272a;
+  --border: #27272a; /* Zinc-800 */
   --input: #27272a;
   --ring: #d4d4d8;
 }
@@ -79,10 +80,10 @@ body {
   border-color: var(--border);
 }
 
-/* Ultra-thin Scrollbar */
+/* Custom Minimalist Scrollbar */
 ::-webkit-scrollbar {
-  width: 3px;
-  height: 3px;
+  width: 5px;
+  height: 5px;
 }
 
 ::-webkit-scrollbar-track {

@@ -84,7 +84,7 @@ export const LeadFeed: React.FC<LeadFeedProps> = ({ leads, onSelectLead, isLoadi
 
           {/* Content */}
           <div>
-            <h3 className="text-lg font-bold leading-tight mb-2 text-zinc-950 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+            <h3 className="text-lg font-bold leading-tight mb-2 text-zinc-950 dark:text-zinc-50 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
                 {lead.title}
             </h3>
             <p className="text-sm text-zinc-500 dark:text-zinc-400 line-clamp-2 leading-relaxed font-medium">
