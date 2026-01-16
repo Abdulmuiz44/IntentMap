@@ -5,9 +5,33 @@ import { Lead } from '@/lib/supabase';
 interface LeadFeedProps {
   leads: Lead[];
   onSelectLead: (lead: Lead) => void;
+  isLoading?: boolean;
 }
 
-export const LeadFeed: React.FC<LeadFeedProps> = ({ leads, onSelectLead }) => {
+const LeadSkeleton = () => (
+    <div className="flex flex-col gap-3 p-6 bg-card rounded-2xl border border-border/50 animate-pulse">
+        <div className="flex items-center gap-2">
+            <div className="h-5 w-16 bg-zinc-200 dark:bg-zinc-800 rounded-full"></div>
+            <div className="h-5 w-24 bg-zinc-200 dark:bg-zinc-800 rounded-full"></div>
+            <div className="ml-auto h-4 w-20 bg-zinc-200 dark:bg-zinc-800 rounded"></div>
+        </div>
+        <div className="space-y-2 mt-1">
+            <div className="h-6 w-3/4 bg-zinc-200 dark:bg-zinc-800 rounded"></div>
+            <div className="h-4 w-full bg-zinc-200 dark:bg-zinc-800 rounded"></div>
+            <div className="h-4 w-2/3 bg-zinc-200 dark:bg-zinc-800 rounded"></div>
+        </div>
+    </div>
+);
+
+export const LeadFeed: React.FC<LeadFeedProps> = ({ leads, onSelectLead, isLoading }) => {
+  if (isLoading) {
+      return (
+          <div className="flex flex-col gap-4">
+              {[1, 2, 3].map((i) => <LeadSkeleton key={i} />)}
+          </div>
+      );
+  }
+
   if (leads.length === 0) {
     return (
         <div className="flex flex-col items-center justify-center py-20 text-muted-foreground">
@@ -25,23 +49,25 @@ export const LeadFeed: React.FC<LeadFeedProps> = ({ leads, onSelectLead }) => {
         <div 
           key={lead.id}
           onClick={() => onSelectLead(lead)}
-          className="group relative flex flex-col gap-3 p-6 bg-card hover:bg-zinc-50 dark:hover:bg-zinc-800/50 rounded-2xl border border-border shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer"
+          className="group relative flex flex-col gap-3 p-6 bg-card hover:bg-zinc-50 dark:hover:bg-zinc-800/50 rounded-2xl border border-zinc-200 dark:border-zinc-800 shadow-sm hover:shadow-md hover:border-zinc-400 dark:hover:border-zinc-700 transition-all duration-200 cursor-pointer"
         >
           {/* Header Badges */}
           <div className="flex items-center gap-2 text-xs font-medium">
             <span className="px-2.5 py-1 rounded-full bg-secondary text-secondary-foreground uppercase tracking-wider">
               {lead.platform}
             </span>
-            <span className={`px-2.5 py-1 rounded-full flex items-center gap-1 ${
-                lead.pain_score >= 8 ? 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400' :
-                lead.pain_score >= 5 ? 'bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400' :
-                'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400'
+            <span className={`px-2.5 py-1 rounded-full flex items-center gap-1 border ${
+                lead.pain_score >= 8 
+                ? 'bg-rose-500/10 text-rose-600 dark:text-rose-400 border-rose-200/20' 
+                : lead.pain_score >= 5 
+                ? 'bg-orange-500/10 text-orange-600 dark:text-orange-400 border-orange-200/20' 
+                : 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-200/20'
             }`}>
                <Flame size={12} /> Pain: {lead.pain_score}/10
             </span>
             {lead.wtp_signal && (
-               <span className="px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400 flex items-center gap-1">
-                 <DollarSign size={12} /> WTP Detected
+               <span className="px-2.5 py-1 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-200/20 flex items-center gap-1">
+                 <DollarSign size={12} /> WTP
                </span>
             )}
             <span className="ml-auto text-muted-foreground">
@@ -70,3 +96,4 @@ export const LeadFeed: React.FC<LeadFeedProps> = ({ leads, onSelectLead }) => {
     </div>
   );
 };
+

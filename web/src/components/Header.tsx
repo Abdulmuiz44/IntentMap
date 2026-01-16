@@ -14,7 +14,7 @@ export function Header() {
 
   if (!mounted) {
       return (
-          <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/80 backdrop-blur-md">
+          <header className="sticky top-0 z-50 w-full border-b border-zinc-200 dark:border-zinc-800 bg-zinc-50/80 dark:bg-zinc-950/80 backdrop-blur-md">
             <div className="flex h-16 items-center justify-between px-6 max-w-5xl mx-auto">
                 <div className="flex items-center gap-2">
                     <span className="text-xl font-bold tracking-tighter">INTENTMAP</span>
@@ -25,7 +25,7 @@ export function Header() {
   }
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/80 backdrop-blur-md transition-all">
+    <header className="sticky top-0 z-50 w-full border-b border-zinc-200 dark:border-zinc-800 bg-zinc-50/80 dark:bg-zinc-950/80 backdrop-blur-md transition-all">
       <div className="flex h-16 items-center justify-between px-6 max-w-5xl mx-auto">
         <div className="flex items-center gap-2">
           <div className="size-6 rounded-md bg-foreground text-background flex items-center justify-center font-bold text-xs">

@@ -74,14 +74,9 @@ export default function Home() {
         <StatGrid leads={leads} />
 
         {/* Content Feed */}
-        {loading ? (
-            <div className="flex justify-center py-20">
-                <Loader2 className="animate-spin text-muted-foreground" size={32} />
-            </div>
-        ) : (
-            <LeadFeed leads={leads} onSelectLead={setSelectedLead} />
-        )}
+        <LeadFeed leads={leads} onSelectLead={setSelectedLead} isLoading={loading} />
       </main>
+
 
       {/* Detail Drawer */}
       <LeadDrawer 
