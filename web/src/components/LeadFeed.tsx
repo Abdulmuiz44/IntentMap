@@ -44,7 +44,7 @@ export const LeadFeed: React.FC<LeadFeedProps> = ({ leads, onSelectLead, isLoadi
             <div className="flex flex-col items-center gap-1">
                 <p className="text-lg font-semibold tracking-tight">Scanning for signals...</p>
                 <p className="text-sm text-zinc-500 max-w-[250px] text-center">
-                    IntentMap is monitoring social discussions in real-time.
+                    <span className="font-bold bg-gradient-to-r from-zinc-500 to-zinc-900 dark:from-zinc-400 dark:to-white bg-clip-text text-transparent">IntentMap</span> is monitoring social discussions in real-time.
                 </p>
             </div>
             <div className="mt-8 flex gap-1">
@@ -62,7 +62,7 @@ export const LeadFeed: React.FC<LeadFeedProps> = ({ leads, onSelectLead, isLoadi
         <div 
           key={lead.id}
           onClick={() => onSelectLead(lead)}
-          className="group relative flex flex-col gap-3 p-6 bg-card hover:bg-zinc-50 dark:hover:bg-zinc-800/50 rounded-2xl border border-zinc-200 dark:border-zinc-800 shadow-sm hover:shadow-md hover:border-zinc-400 dark:hover:border-zinc-700 transition-all duration-200 cursor-pointer"
+          className="group relative flex flex-col gap-3 p-6 bg-card hover:bg-zinc-50 dark:hover:bg-zinc-800/50 rounded-2xl border border-zinc-200 dark:border-zinc-800 shadow-sm hover:shadow-2xl hover:shadow-emerald-500/5 dark:hover:shadow-emerald-500/10 hover:-translate-y-1 hover:border-zinc-400 dark:hover:border-zinc-700 transition-all duration-300 cursor-pointer"
         >
           {/* Header Badges */}
           <div className="flex items-center gap-2 text-xs font-medium">
