@@ -16,7 +16,7 @@ export default function Home() {
   const fetchLeads = async () => {
     setLoading(true);
     const { data, error } = await supabase
-      .from('leads')
+      .from('intent_leads')
       .select('*')
       .order('created_at', { ascending: false });
     
@@ -30,11 +30,11 @@ export default function Home() {
 
     // Realtime subscription
     const channel = supabase
-      .channel('leads_changes')
-      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'leads' }, (payload) => {
+      .channel('intent_leads_changes')
+      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'intent_leads' }, (payload) => {
           setLeads(prev => [payload.new as Lead, ...prev]);
       })
-      .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'leads' }, (payload) => {
+      .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'intent_leads' }, (payload) => {
           setLeads(prev => prev.map(l => l.id === payload.new.id ? payload.new as Lead : l));
           // Also update selected lead if open
           if (selectedLead?.id === payload.new.id) {
@@ -49,9 +49,9 @@ export default function Home() {
   }, [selectedLead?.id]); // Add dependency to ensure state consistency
 
   const handleContactUpdate = (id: string, status: boolean) => {
-      setLeads(prev => prev.map(l => l.id === id ? { ...l, contacted: status } : l));
+      setLeads(prev => prev.map(l => l.id === id ? { ...l, synced: status } : l)); // mapped synced to contacted logic for now
       if (selectedLead && selectedLead.id === id) {
-          setSelectedLead({ ...selectedLead, contacted: status });
+          setSelectedLead({ ...selectedLead, synced: status });
       }
   };
 
@@ -74,7 +74,7 @@ export default function Home() {
         <StatGrid leads={leads} />
 
         {/* Content Feed */}
-        <LeadFeed />
+        <LeadFeed leads={leads} onSelectLead={setSelectedLead} isLoading={loading} />
       </main>
 
 

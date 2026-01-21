@@ -7,20 +7,14 @@ export const supabase = createClient(supabaseUrl, supabaseKey);
 
 export interface Lead {
   id: string;
-  platform: string;
-  post_url: string;
-  title: string;
-  selftext: string;
-  pain_score: number;
-  wtp_signal: boolean;
-  ai_analysis: {
-    pain_score: number;
-    wtp_signal: boolean;
-    hard_pain_summary: string;
-    mom_test_question: string;
-    is_high_intent: boolean;
-  };
-  contacted: boolean;
+  source: string;
+  author: string;
+  content: string;
+  url: string;
+  score: number;
+  pain_point: string;
+  intent_category: 'Switching' | 'NewSearch' | 'Complaint' | 'None';
+  drafted_reply: string;
+  synced: boolean;
   created_at: string;
-  reddit_post_id: string;
 }
