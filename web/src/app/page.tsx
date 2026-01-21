@@ -86,7 +86,7 @@ export default function Home() {
                 Please ensure you have added your 
                 <code className="mx-1 px-1.5 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800 font-mono text-sm text-zinc-900 dark:text-zinc-200">NEXT_PUBLIC_SUPABASE_URL</code> 
                 and 
-                <code className="mx-1 px-1.5 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800 font-mono text-sm text-zinc-900 dark:text-zinc-200">NEXT_PUBLIC_SUPABASE_ANON_KEY</code> 
+                <code className="mx-1 px-1.5 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800 font-mono text-sm text-zinc-900 dark:text-zinc-200">NEXT_PUBLIC_SUPABASE_ANON_KEY</code> (or <code className="mx-1 px-1.5 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800 font-mono text-sm text-zinc-900 dark:text-zinc-200">NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY</code>)
                 to your <code>web/.env.local</code> file.
              </p>
              <div className="pt-4">
