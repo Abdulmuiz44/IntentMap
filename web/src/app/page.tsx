@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { supabase, Lead } from "@/lib/supabase";
 import { StatGrid } from "@/components/StatGrid";
-import { LeadFeed } from "@/components/LeadFeed";
+import LeadFeed from "@/components/LeadFeed";
 import { LeadDrawer } from "@/components/LeadDrawer";
 import { Header } from "@/components/Header";
 import { Loader2 } from "lucide-react";
@@ -74,7 +74,7 @@ export default function Home() {
         <StatGrid leads={leads} />
 
         {/* Content Feed */}
-        <LeadFeed leads={leads} onSelectLead={setSelectedLead} isLoading={loading} />
+        <LeadFeed />
       </main>
 
 

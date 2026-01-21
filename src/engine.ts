@@ -5,20 +5,33 @@ import { logger } from "./utils/logger";
 import { withRetry } from "./utils/retry";
 
 export class IntentEngine {
-  private geminiModel: GenerativeModel;
-  private mistralClient: Mistral;
+  private geminiModel: GenerativeModel | null = null;
+  private mistralClient: Mistral | null = null;
 
   constructor() {
     const geminiKey = process.env.GEMINI_API_KEY;
     const mistralKey = process.env.MISTRAL_API_KEY;
 
-    if (!geminiKey || !mistralKey) {
-      logger.warn("Missing API Keys for AI Engine. Ensure .env is set.");
+    if (geminiKey) {
+        try {
+            const genAI = new GoogleGenerativeAI(geminiKey);
+            this.geminiModel = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+        } catch (e) {
+            logger.warn("Failed to initialize Gemini client", { error: e });
+        }
     }
 
-    const genAI = new GoogleGenerativeAI(geminiKey || "");
-    this.geminiModel = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
-    this.mistralClient = new Mistral({ apiKey: mistralKey || "" });
+    if (mistralKey) {
+        try {
+            this.mistralClient = new Mistral({ apiKey: mistralKey });
+        } catch (e) {
+            logger.warn("Failed to initialize Mistral client", { error: e });
+        }
+    }
+
+    if (!this.geminiModel && !this.mistralClient) {
+      logger.warn("No AI engines initialized. Analysis will fail.");
+    }
   }
 
   private constructPrompt(text: string): string {
@@ -41,26 +54,41 @@ export class IntentEngine {
   }
 
   async analyze(text: string): Promise<AnalysisResult> {
-    try {
-      return await withRetry(() => this.analyzeWithGemini(text), 3, 1000, "Gemini Analysis");
-    } catch (error) {
-      logger.warn("Gemini failed, switching to Mistral...", { error });
-      try {
-        return await withRetry(() => this.analyzeWithMistral(text), 3, 1000, "Mistral Analysis");
-      } catch (mistralError) {
-          logger.error("Both AI engines failed.", { mistralError });
-          return {
-            pain_score: 0,
-            wtp_signal: false,
-            hard_pain_summary: "AI Analysis Failed",
-            mom_test_question: null,
-            is_high_intent: false,
-          };
-      }
+    let errorToThrow;
+
+    // Try Gemini First
+    if (this.geminiModel) {
+        try {
+            return await withRetry(() => this.analyzeWithGemini(text), 3, 1000, "Gemini Analysis");
+        } catch (error) {
+            logger.warn("Gemini failed, switching to Mistral...", { error });
+            errorToThrow = error;
+        }
     }
+
+    // Try Mistral Second
+    if (this.mistralClient) {
+        try {
+            return await withRetry(() => this.analyzeWithMistral(text), 3, 1000, "Mistral Analysis");
+        } catch (mistralError) {
+            logger.error("Mistral failed.", { mistralError });
+            errorToThrow = mistralError;
+        }
+    }
+
+    // If we reach here, both failed or neither is initialized
+    logger.error("All AI engines failed or are missing.", { error: errorToThrow });
+    return {
+        pain_score: 0,
+        wtp_signal: false,
+        hard_pain_summary: "AI Analysis Failed",
+        mom_test_question: "Analysis failed.",
+        is_high_intent: false,
+    };
   }
 
   private async analyzeWithGemini(text: string): Promise<AnalysisResult> {
+    if (!this.geminiModel) throw new Error("Gemini not initialized");
     const prompt = this.constructPrompt(text);
     const result = await this.geminiModel.generateContent(prompt);
     const response = await result.response;
@@ -69,6 +97,7 @@ export class IntentEngine {
   }
 
   private async analyzeWithMistral(text: string): Promise<AnalysisResult> {
+    if (!this.mistralClient) throw new Error("Mistral not initialized");
     const prompt = this.constructPrompt(text);
     const result = await this.mistralClient.chat.complete({
       model: "mistral-tiny",

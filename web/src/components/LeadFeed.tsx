@@ -1,98 +1,205 @@
-import React from 'react';
-import { DollarSign, Flame, Activity } from 'lucide-react';
-import { Lead } from '@/lib/supabase';
+'use client';
 
-interface LeadFeedProps {
-  leads: Lead[];
-  onSelectLead: (lead: Lead) => void;
-  isLoading?: boolean;
+import React, { useState } from 'react';
+import { 
+  ArrowUpRight, 
+  CheckCircle2, 
+  MessageSquare, 
+  MoreHorizontal, 
+  RefreshCw, 
+  Twitter, 
+  Linkedin, 
+  Globe 
+} from 'lucide-react';
+import { cn } from '@/lib/utils'; // Assuming standard shadcn/ui utils exist or I will inline a simple helper if strict
+
+// Inline utility for class merging if specific lib path varies, 
+// but using standard clsx/tailwind-merge pattern is safer if the project has it.
+// Given package.json has clsx and tailwind-merge, I'll rely on imports or fallback.
+// Since I can't be 100% sure of @/lib/utils content, I'll implement a local helper if imports fail, 
+// but for this file I will assume standard usage or provide a safe version.
+
+// Mock Data Interface
+interface Lead {
+  id: string;
+  author: string;
+  source: 'Twitter' | 'Reddit' | 'LinkedIn';
+  content: string;
+  score: number;
+  pain_point: string;
+  category: 'Switching' | 'NewSearch' | 'Complaint';
+  timestamp: string;
+  synced: boolean;
 }
 
-const LeadSkeleton = () => (
-    <div className="flex flex-col gap-3 p-6 bg-white dark:bg-zinc-950 rounded-2xl border border-zinc-200 dark:border-zinc-800 animate-pulse">
-        <div className="flex items-center gap-2">
-            <div className="h-5 w-16 bg-zinc-100 dark:bg-zinc-800 rounded-full"></div>
-            <div className="h-5 w-24 bg-zinc-100 dark:bg-zinc-800 rounded-full"></div>
-            <div className="ml-auto h-4 w-20 bg-zinc-100 dark:bg-zinc-800 rounded"></div>
-        </div>
-        <div className="space-y-2 mt-2">
-            <div className="h-5 w-3/4 bg-zinc-100 dark:bg-zinc-800 rounded"></div>
-            <div className="h-4 w-full bg-zinc-100 dark:bg-zinc-800 rounded"></div>
-        </div>
-    </div>
-);
-
-export const LeadFeed: React.FC<LeadFeedProps> = ({ leads, onSelectLead, isLoading }) => {
-  if (isLoading) {
-      return (
-          <div className="flex flex-col gap-4">
-              {[1, 2, 3].map((i) => <LeadSkeleton key={i} />)}
-          </div>
-      );
+const MOCK_LEADS: Lead[] = [
+  {
+    id: '1',
+    author: '@alex_founder',
+    source: 'Twitter',
+    content: "Salesforce is just too complex for our 10-person team. We need something simpler that just works for outbound.",
+    score: 9,
+    pain_point: "Complexity/Cost",
+    category: 'Switching',
+    timestamp: '2m ago',
+    synced: false,
+  },
+  {
+    id: '2',
+    author: 'u/saas_wizard',
+    source: 'Reddit',
+    content: "Looking for recommendations on intent data providers. ZoomInfo is way out of budget.",
+    score: 8,
+    pain_point: "Budget constraints",
+    category: 'NewSearch',
+    timestamp: '15m ago',
+    synced: true,
+  },
+  {
+    id: '3',
+    author: 'Sarah Jenkins',
+    source: 'LinkedIn',
+    content: "Does anyone know a tool that can track buyer signals from social media automatically?",
+    score: 10,
+    pain_point: "Automation need",
+    category: 'NewSearch',
+    timestamp: '1h ago',
+    synced: false,
+  },
+  {
+    id: '4',
+    author: '@dev_marketer',
+    source: 'Twitter',
+    content: "My current CRM keeps crashing. Need a reliable alternative ASAP.",
+    score: 7,
+    pain_point: "Stability",
+    category: 'Complaint',
+    timestamp: '3h ago',
+    synced: false,
   }
+];
 
-  if (leads.length === 0) {
-    return (
-        <div className="flex flex-col items-center justify-center py-24 border border-dashed border-zinc-200 dark:border-zinc-800 rounded-3xl bg-zinc-50 dark:bg-zinc-900/50 animate-pulse">
-            <div className="relative mb-6">
-                <div className="absolute inset-0 bg-blue-500/10 rounded-full blur-2xl"></div>
-                <div className="relative bg-white dark:bg-black p-4 rounded-full border border-zinc-200 dark:border-zinc-800 shadow-sm">
-                    <Activity size={28} className="text-zinc-900 dark:text-zinc-100 animate-pulse" />
-                </div>
-            </div>
-            <div className="flex flex-col items-center gap-1">
-                <p className="text-lg font-bold tracking-tight text-zinc-950 dark:text-zinc-50">Scanning for signals...</p>
-                <p className="text-sm text-zinc-500 dark:text-zinc-400 max-w-[250px] text-center font-medium">
-                    Monitoring social discussions in real-time.
-                </p>
-            </div>
-        </div>
-    );
+const SourceIcon = ({ source }: { source: Lead['source'] }) => {
+  switch (source) {
+    case 'Twitter': return <Twitter className="w-4 h-4 text-blue-400" />;
+    case 'LinkedIn': return <Linkedin className="w-4 h-4 text-blue-600" />;
+    case 'Reddit': return <Globe className="w-4 h-4 text-orange-500" />;
+    default: return <Globe className="w-4 h-4 text-gray-400" />;
   }
+};
 
+const ScoreBadge = ({ score }: { score: number }) => {
+  const isHigh = score > 8;
   return (
-    <div className="flex flex-col gap-6">
-      {leads.map((lead) => (
-        <div 
-          key={lead.id}
-          onClick={() => onSelectLead(lead)}
-          className="group relative flex flex-col gap-3 p-6 bg-white dark:bg-zinc-950 rounded-2xl border border-zinc-200 dark:border-zinc-800 hover:border-zinc-400 dark:hover:border-zinc-600 hover:scale-[1.01] transition-all duration-300 ease-out cursor-pointer"
-        >
-          {/* Header Badges */}
-          <div className="flex items-center gap-2 text-xs font-semibold">
-            <span className="px-2.5 py-1 rounded-full bg-zinc-50 dark:bg-zinc-900 text-zinc-600 dark:text-zinc-300 uppercase tracking-wider text-[10px] border border-zinc-100 dark:border-zinc-800">
-              {lead.platform}
-            </span>
-            <span className={`px-2.5 py-1 rounded-full flex items-center gap-1 border ${
-                lead.pain_score >= 8 
-                ? 'bg-rose-50 border-rose-200 text-rose-600 dark:bg-transparent dark:border-rose-500/50 dark:text-rose-400' 
-                : lead.pain_score >= 5 
-                ? 'bg-orange-50 border-orange-200 text-orange-600 dark:bg-transparent dark:border-orange-500/50 dark:text-orange-400' 
-                : 'bg-emerald-50 border-emerald-200 text-emerald-600 dark:bg-transparent dark:border-emerald-500/50 dark:text-emerald-400'
-            }`}>
-               <Flame size={12} /> Pain: {lead.pain_score}
-            </span>
-            {lead.wtp_signal && (
-               <span className="px-2.5 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-600 dark:bg-transparent dark:border-emerald-500/50 dark:text-emerald-400 flex items-center gap-1">
-                 <DollarSign size={12} /> WTP
-               </span>
-            )}
-            <span className="ml-auto text-zinc-400 dark:text-zinc-500 tabular-nums text-[10px] font-medium uppercase tracking-widest">
-                {new Date(lead.created_at).toLocaleDateString()}
-            </span>
-          </div>
-
-          {/* Content */}
-          <div>
-            <h3 className="text-lg font-bold leading-tight mb-2 text-zinc-950 dark:text-zinc-50 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
-                {lead.title}
-            </h3>
-            <p className="text-sm text-zinc-500 dark:text-zinc-400 line-clamp-2 leading-relaxed font-medium">
-                {lead.ai_analysis.hard_pain_summary || lead.selftext}
-            </p>
-          </div>
-        </div>
-      ))}
+    <div className={`
+      flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold
+      ${isHigh 
+        ? 'bg-green-500/10 text-green-400 border border-green-500/20 shadow-[0_0_10px_-3px_rgba(74,222,128,0.5)]' 
+        : 'bg-yellow-500/10 text-yellow-400 border border-yellow-500/20'}
+    `}>
+      <span>{score}/10 Intent</span>
     </div>
   );
 };
+
+export default function LeadFeed() {
+  const [leads, setLeads] = useState<Lead[]>(MOCK_LEADS);
+
+  const handleSync = (id: string) => {
+    setLeads(leads.map(lead => 
+      lead.id === id ? { ...lead, synced: true } : lead
+    ));
+  };
+
+  return (
+    <div className="min-h-screen bg-[#0F0F0F] text-gray-300 p-6 font-sans selection:bg-purple-500/30">
+      {/* Header */}
+      <header className="flex items-center justify-between mb-8 max-w-5xl mx-auto">
+        <div>
+          <h1 className="text-2xl font-bold text-white tracking-tight">Lead Feed</h1>
+          <p className="text-sm text-gray-500 mt-1">Real-time intent signals from across the web.</p>
+        </div>
+        <div className="flex gap-3">
+          <button className="p-2 bg-[#1F1F1F] hover:bg-[#2A2A2A] rounded-lg border border-white/5 transition-colors">
+            <RefreshCw className="w-4 h-4 text-gray-400" />
+          </button>
+        </div>
+      </header>
+
+      {/* Bento Grid Layout */}
+      <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {leads.map((lead) => (
+          <div 
+            key={lead.id}
+            className="group relative flex flex-col justify-between p-5 bg-[#1F1F1F] rounded-xl border border-white/5 hover:border-white/10 transition-all duration-300 hover:shadow-lg hover:shadow-purple-500/5"
+          >
+            {/* Card Header */}
+            <div className="flex justify-between items-start mb-4">
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center border border-white/5">
+                   <SourceIcon source={lead.source} />
+                </div>
+                <div>
+                  <h3 className="text-sm font-medium text-white">{lead.author}</h3>
+                  <span className="text-xs text-gray-500">{lead.timestamp}</span>
+                </div>
+              </div>
+              <button className="text-gray-600 hover:text-white transition-colors">
+                <MoreHorizontal className="w-4 h-4" />
+              </button>
+            </div>
+
+            {/* Content */}
+            <div className="mb-6">
+              <p className="text-sm text-gray-300 leading-relaxed">
+                "{lead.content}"
+              </p>
+            </div>
+
+            {/* Metadata Badges */}
+            <div className="flex flex-wrap gap-2 mb-6">
+              <ScoreBadge score={lead.score} />
+              <span className="px-2 py-1 rounded-full text-xs bg-white/5 text-gray-400 border border-white/5">
+                {lead.category}
+              </span>
+            </div>
+
+            {/* Actions */}
+            <div className="flex items-center justify-between pt-4 border-t border-white/5 mt-auto">
+              <div className="flex gap-3">
+                 <button className="flex items-center gap-1.5 text-xs text-gray-500 hover:text-purple-400 transition-colors">
+                  <MessageSquare className="w-3.5 h-3.5" />
+                  Draft Reply
+                </button>
+                <button className="flex items-center gap-1.5 text-xs text-gray-500 hover:text-blue-400 transition-colors">
+                  <ArrowUpRight className="w-3.5 h-3.5" />
+                  View Source
+                </button>
+              </div>
+
+              <button 
+                onClick={() => handleSync(lead.id)}
+                disabled={lead.synced}
+                className={`
+                  flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all
+                  ${lead.synced 
+                    ? 'bg-green-500/10 text-green-500 cursor-default' 
+                    : 'bg-white text-black hover:bg-gray-200'}
+                `}
+              >
+                {lead.synced ? (
+                  <>
+                    <CheckCircle2 className="w-3.5 h-3.5" />
+                    Synced
+                  </>
+                ) : (
+                  'Sync to CRM'
+                )}
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}

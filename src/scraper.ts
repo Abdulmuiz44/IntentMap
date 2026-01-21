@@ -1,4 +1,4 @@
-import Snoowrap from "snoowrap";
+import { Composio } from "@composio/core";
 import Bottleneck from "bottleneck";
 import { IntentEngine } from "./engine";
 import { AnalysisResult } from "./utils/schemas";
@@ -12,39 +12,34 @@ import dotenv from "dotenv";
 dotenv.config();
 
 // Configuration
-const SUBREDDITS = ["SaaS", "IndieHackers"];
+const SUBREDDITS = ["SaaS", "IndieHackers", "SideProject"];
 const KEYWORDS = ["validation", "no sales", "alternative to", "struggling"];
-const POST_LIMIT = 20;
+const POST_LIMIT = 10; // Composio might have limits
 
-// Rate Limiting: 1 request per second (safe for Reddit's 60/min)
+// Rate Limiting
 const limiter = new Bottleneck({
-  minTime: 2000, // Be even safer, 1 req every 2s
+  minTime: 2000,
   maxConcurrent: 1
 });
 
 export class RedditScraper {
-  private r: Snoowrap;
+  private composio: Composio;
   private engine: IntentEngine;
 
   constructor() {
     this.engine = new IntentEngine();
     
-    const clientId = process.env.REDDIT_CLIENT_ID;
-    const clientSecret = process.env.REDDIT_CLIENT_SECRET;
-    const refreshToken = process.env.REDDIT_REFRESH_TOKEN;
+    const composioApiKey = process.env.COMPOSIO_API_KEY;
 
-    if (!clientId || !clientSecret || !refreshToken) {
-      throw new Error("Missing Reddit credentials in .env");
+    if (!composioApiKey) {
+      throw new Error("Missing COMPOSIO_API_KEY in .env");
     }
 
-    this.r = new Snoowrap({
-      userAgent: "intentmap.biz/1.0.0",
-      clientId,
-      clientSecret,
-      refreshToken,
+    this.composio = new Composio({
+      apiKey: composioApiKey,
     });
     
-    this.r.config({ continueAfterRatelimitError: true });
+    logger.info("Composio Client Initialized.");
   }
 
   private matchesKeywords(text: string): boolean {
@@ -52,22 +47,24 @@ export class RedditScraper {
     return KEYWORDS.some((keyword) => lowerText.includes(keyword));
   }
 
-  private async processPost(post: Snoowrap.Submission) {
-    // Validate Structure using Zod
-    // Note: Snoowrap objects are complex, we pick what we need
-    const safePostResult = RedditPostSchema.safeParse({
-        id: post.id,
-        title: post.title,
-        selftext: post.selftext,
-        author: { name: post.author.name },
-        permalink: post.permalink,
-        url: post.url,
-        created_utc: post.created_utc
-    });
+  private async processPost(post: any) {
+    // Map Composio response to our schema
+    // The response structure depends on Composio, but usually mirrors Reddit API
+    // We'll try to map common fields
+    const mappedPost = {
+        id: post.id || post.name || Math.random().toString(36).substring(7),
+        title: post.title || "No Title",
+        selftext: post.selftext || post.text || "",
+        author: { name: post.author || "unknown" },
+        permalink: post.permalink || "",
+        url: post.url || "",
+        created_utc: post.created_utc || Date.now() / 1000
+    };
+
+    const safePostResult = RedditPostSchema.safeParse(mappedPost);
 
     if (!safePostResult.success) {
-        // Debug log only to avoid spamming if schema mismatches slightly
-        logger.debug(`Skipping invalid post structure: ${post.id}`, { errors: safePostResult.error });
+        logger.debug(`Skipping invalid post structure: ${mappedPost.id}`, { errors: safePostResult.error });
         return;
     }
     const safePost = safePostResult.data;
@@ -91,14 +88,15 @@ export class RedditScraper {
     }
   }
 
-  private async saveLead(post: Snoowrap.Submission | any, analysis: AnalysisResult) {
+  private async saveLead(post: any, analysis: AnalysisResult) {
       try {
           const { error } = await supabase.from('leads').upsert({
               reddit_post_id: post.id,
               platform: 'reddit',
-              post_url: `https://reddit.com${post.permalink}`,
+              post_url: post.permalink.startsWith('http') ? post.permalink : `https://reddit.com${post.permalink}`,
               title: post.title,
               selftext: post.selftext,
+              author: post.author.name,
               pain_score: analysis.pain_score,
               wtp_signal: analysis.wtp_signal,
               ai_analysis: analysis,
@@ -110,14 +108,13 @@ export class RedditScraper {
           } else {
               logger.info(`Lead saved successfully: ${post.id}`);
               
-              // Email Notification for High Pain
               if (analysis.pain_score >= 8) {
                   await sendLeadAlert({
                       postTitle: post.title,
                       painScore: analysis.pain_score,
-                      hardPainSummary: analysis.hard_pain_summary,
-                      momTestQuestion: analysis.mom_test_question,
-                      postUrl: `https://reddit.com${post.permalink}`
+                      hardPainSummary: analysis.hard_pain_summary || "Pain detected, check post for details.",
+                      momTestQuestion: analysis.mom_test_question || "Could you tell me more about how this impacts your workflow?",
+                      postUrl: post.permalink.startsWith('http') ? post.permalink : `https://reddit.com${post.permalink}`
                   });
               }
           }
@@ -127,15 +124,36 @@ export class RedditScraper {
   }
 
   async scanSubreddit(subName: string) {
-      logger.info(`Scanning r/${subName}...`);
+      logger.info(`Scanning r/${subName} via Composio...`);
       try {
-        // Wrap getNew in bottleneck and retry
-        // cast to any to avoid snoowrap types hell
-        const posts = await limiter.schedule(() => 
+        // Execute the action using Composio
+        const response = await limiter.schedule(() => 
             withRetry(async () => {
-                 return await this.r.getSubreddit(subName).getNew({ limit: POST_LIMIT });
+                 // Based on TS definition, it seems to expect properties directly, but let's try strict object structure
+                 // Casting to any to bypass the restrictive type definition that seems outdated or mismatching
+                 return await this.composio.tools.execute("REDDIT_GET_SUBREDDIT_POSTS", {
+                     subreddit: subName,
+                     limit: POST_LIMIT
+                 } as any);
             }, 3, 5000, `Fetch r/${subName}`)
         );
+
+        // Composio response structure usually has 'data' or is the data itself
+        let posts: any[] = [];
+        const responseData = response as any; // Cast to any to handle structure
+
+        if (responseData && responseData.data) {
+            posts = Array.isArray(responseData.data) ? responseData.data : [];
+        } else if (Array.isArray(responseData)) {
+            posts = responseData;
+        } else if (responseData && responseData.items) {
+            posts = responseData.items;
+        }
+
+        if (!posts || posts.length === 0) {
+             logger.warn(`No posts found or unknown response structure for r/${subName}`, { responseKeys: Object.keys(responseData || {}) });
+             return;
+        }
 
         logger.info(`Fetched ${posts.length} posts from r/${subName}. Processing...`);
 
@@ -153,3 +171,4 @@ export class RedditScraper {
     }
   }
 }
+
