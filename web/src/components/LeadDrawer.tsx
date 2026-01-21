@@ -36,30 +36,30 @@ export const LeadDrawer: React.FC<LeadDrawerProps> = ({ lead, onClose, onContact
           {/* Title Section */}
           <div>
             <div className="flex flex-wrap items-center gap-2 mb-4">
-               {lead.contacted && (
+               {lead.synced && (
                    <span className="px-3 py-1 rounded-full bg-blue-50 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400 text-xs font-bold flex items-center gap-1">
-                       <CheckCircle2 size={12} /> CONTACTED
+                       <CheckCircle2 size={12} /> SYNCED
                    </span>
                )}
               <span className={`px-3 py-1 rounded-full text-xs font-bold border ${
-                   lead.pain_score >= 8 ? 'bg-rose-50 border-rose-200 text-rose-600 dark:bg-transparent dark:border-rose-500/50 dark:text-rose-400' : 'bg-zinc-50 border-zinc-200 text-zinc-700 dark:bg-zinc-800 dark:border-zinc-700 dark:text-zinc-300'
+                   lead.score >= 8 ? 'bg-rose-50 border-rose-200 text-rose-600 dark:bg-transparent dark:border-rose-500/50 dark:text-rose-400' : 'bg-zinc-50 border-zinc-200 text-zinc-700 dark:bg-zinc-800 dark:border-zinc-700 dark:text-zinc-300'
               }`}>
-                Pain Score: {lead.pain_score}/10
+                Intent Score: {lead.score}/10
               </span>
-              {lead.wtp_signal && (
-                <span className="px-3 py-1 rounded-full bg-emerald-50 border-emerald-200 text-emerald-600 dark:bg-emerald-900/30 dark:text-emerald-400 text-xs font-bold">
-                  $$$ WTP Signal
-                </span>
-              )}
+              <span className="px-3 py-1 rounded-full bg-emerald-50 border-emerald-200 text-emerald-600 dark:bg-emerald-900/30 dark:text-emerald-400 text-xs font-bold">
+                  {lead.intent_category}
+              </span>
             </div>
-            <h3 className="text-2xl font-bold tracking-tight mb-3 leading-snug text-zinc-950 dark:text-white">{lead.title}</h3>
+            <h3 className="text-2xl font-bold tracking-tight mb-3 leading-snug text-zinc-950 dark:text-white">
+                Signal from {lead.author}
+            </h3>
             <a 
-              href={lead.post_url} 
+              href={lead.url} 
               target="_blank" 
               rel="noopener noreferrer" 
               className="inline-flex items-center gap-1 text-sm font-medium text-blue-600 hover:text-blue-500 hover:underline"
             >
-              Open on Reddit <ExternalLink size={14} />
+              Open Source <ExternalLink size={14} />
             </a>
           </div>
 
@@ -67,16 +67,16 @@ export const LeadDrawer: React.FC<LeadDrawerProps> = ({ lead, onClose, onContact
           <div className="p-6 rounded-2xl bg-zinc-50 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800">
             <h4 className="text-xs font-bold uppercase tracking-widest text-zinc-500 mb-3">The Pain Point</h4>
             <p className="text-base leading-7 text-zinc-900 dark:text-zinc-100">
-              {lead.ai_analysis.hard_pain_summary}
+              {lead.pain_point}
             </p>
           </div>
 
           {/* Mom Test Question */}
           <div>
-             <h4 className="text-xs font-bold uppercase tracking-widest text-zinc-500 mb-3">Suggested Opener (The &apos;Mom Test&apos;)</h4>
+             <h4 className="text-xs font-bold uppercase tracking-widest text-zinc-500 mb-3">Suggested Reply</h4>
              <div className="p-6 rounded-2xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-sm text-lg font-medium text-zinc-950 dark:text-white relative">
                <div className="absolute -left-3 top-6 w-1 h-8 bg-blue-500 rounded-full"></div>
-               &quot;{lead.ai_analysis.mom_test_question}&quot;
+               &quot;{lead.drafted_reply}&quot;
              </div>
           </div>
           
@@ -84,9 +84,9 @@ export const LeadDrawer: React.FC<LeadDrawerProps> = ({ lead, onClose, onContact
            <div className="pt-8 border-t border-zinc-200 dark:border-zinc-800">
               <ActionButtons 
                 leadId={lead.id} 
-                dmQuestion={lead.ai_analysis.mom_test_question} 
-                isContacted={lead.contacted}
-                onContactUpdate={(status) => onContactUpdate(lead.id, status)}
+                draftedReply={lead.drafted_reply}
+                isSynced={lead.synced}
+                onSyncUpdate={(status) => onContactUpdate(lead.id, status)}
               />
            </div>
 
@@ -94,7 +94,7 @@ export const LeadDrawer: React.FC<LeadDrawerProps> = ({ lead, onClose, onContact
            <div className="pt-8 opacity-60 hover:opacity-100 transition-opacity">
              <h4 className="text-xs font-bold uppercase tracking-widest text-zinc-500 mb-3">Original Post Context</h4>
              <div className="p-4 rounded-xl bg-zinc-50 dark:bg-zinc-900/30 border border-zinc-200 dark:border-zinc-800 text-sm whitespace-pre-wrap font-mono text-zinc-600 dark:text-zinc-400">
-                {lead.selftext}
+                {lead.content}
              </div>
            </div>
         </div>

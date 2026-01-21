@@ -8,9 +8,10 @@ interface StatGridProps {
 
 export const StatGrid: React.FC<StatGridProps> = ({ leads }) => {
   const totalLeads = leads.length;
-  const highValueLeads = leads.filter(l => l.wtp_signal).length;
-  const avgPain = totalLeads > 0 
-    ? (leads.reduce((acc, curr) => acc + (curr.pain_score || 0), 0) / totalLeads).toFixed(1) 
+  // Let's count high intent (score > 8) as "High Value"
+  const highValueLeads = leads.filter(l => l.score >= 8).length;
+  const avgScore = totalLeads > 0 
+    ? (leads.reduce((acc, curr) => acc + (curr.score || 0), 0) / totalLeads).toFixed(1) 
     : '0';
 
   const stats = [
@@ -24,13 +25,13 @@ export const StatGrid: React.FC<StatGridProps> = ({ leads }) => {
       label: "HIGH INTENT",
       value: highValueLeads,
       icon: DollarSign,
-      desc: "Willingness to pay detected"
+      desc: "Score > 8 detected"
     },
     {
-      label: "AVG PAIN LEVEL",
-      value: avgPain,
+      label: "AVG SCORE",
+      value: avgScore,
       icon: Target,
-      desc: "Intensity of problem (0-10)"
+      desc: "Intent Intensity (0-10)"
     }
   ];
 
