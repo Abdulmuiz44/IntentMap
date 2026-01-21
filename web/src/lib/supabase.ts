@@ -5,6 +5,10 @@ const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'placeholder';
 
 export const supabase = createClient(supabaseUrl, supabaseKey);
 
+export const isSupabaseConfigured = () => {
+  return supabaseUrl !== 'https://placeholder.supabase.co' && supabaseKey !== 'placeholder';
+};
+
 export interface Lead {
   id: string;
   source: string;
